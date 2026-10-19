@@ -8,11 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --acento: #EE6A24;       /* laranja: "calor" */
-    --acento-claro: #FF9A5C;
-    --fundo: #0E1110;
+    --neon: #FF2A4F;          /* vermelho neon */
+    --neon-rgb: 255, 42, 79;
+    --neon-nucleo: #FFE3E8;   /* miolo claro do tubo de neon */
+    --fundo: #0A0B0D;
     --texto: #FFFFFF;
-    --texto-suave: #B9BDBB;
+    --texto-suave: #A9ADB3;
+    --brilho-neon:
+      0 0 6px rgba(var(--neon-rgb), .9),
+      0 0 18px rgba(var(--neon-rgb), .8),
+      0 0 42px rgba(var(--neon-rgb), .6),
+      0 0 90px rgba(var(--neon-rgb), .4);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; background: #000; overflow: hidden; }
@@ -24,103 +30,138 @@
     background: var(--fundo); color: var(--texto);
     transform-origin: center center;
   }
+  #camera { position: absolute; inset: 0; transform-origin: 50% 45%; }
 
-  /* Fundo: brilho e ondas de calor */
+  /* Fundo: brilho central, brasas (canvas) e vinheta */
   #brilho {
-    position: absolute; left: 50%; top: 46%; width: 1400px; height: 1400px;
+    position: absolute; left: 50%; top: 44%; width: 1500px; height: 1500px;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(238,106,36,.55) 0%, rgba(238,106,36,.12) 38%, transparent 68%);
-    opacity: .15;
+    background: radial-gradient(circle, rgba(var(--neon-rgb), .42) 0%, rgba(var(--neon-rgb), .1) 36%, transparent 66%);
+    opacity: .12;
   }
-  #ondas { position: absolute; inset: -200px 0 0 0; opacity: .22; }
-  #ondas path { fill: none; stroke: var(--acento); stroke-width: 3; }
+  #particulas { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+  #vinheta {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(0,0,0,.75) 100%);
+  }
 
   /* Barra de progresso (retenção: a pessoa vê que é curto) */
-  #progresso { position: absolute; top: 0; left: 0; height: 10px; width: 100%; background: rgba(255,255,255,.12); }
-  #progresso i { display: block; height: 100%; width: 100%; background: var(--acento); transform-origin: left; transform: scaleX(0); }
+  #progresso { position: absolute; top: 0; left: 0; height: 10px; width: 100%; background: rgba(255,255,255,.1); z-index: 5; }
+  #progresso i { display: block; height: 100%; width: 100%; background: var(--neon); box-shadow: 0 0 18px var(--neon); transform-origin: left; transform: scaleX(0); }
+
+  /* Cortina de transição: faixa neon que atravessa a tela */
+  #cortina {
+    position: absolute; left: -10%; width: 120%; height: 2400px; top: 1920px; z-index: 4;
+    background: linear-gradient(to bottom, var(--neon) 0, var(--neon) 14px, var(--fundo) 14px);
+    box-shadow: 0 -10px 60px rgba(var(--neon-rgb), .8);
+  }
 
   .cena { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 90px; }
+  .neon { color: var(--neon-nucleo); text-shadow: var(--brilho-neon); }
 
   /* Cena 1: gancho */
-  #gancho { font-size: 112px; font-weight: 900; line-height: 1.08; letter-spacing: -2px; }
+  #calor { font-size: 230px; font-weight: 900; letter-spacing: -6px; line-height: 1; opacity: 0; }
+  #gancho { margin-top: 40px; font-size: 96px; font-weight: 900; line-height: 1.1; letter-spacing: -2px; }
   #gancho .w { display: inline-block; opacity: 0; }
-  #gancho .quente { color: var(--acento); }
 
   /* Cena 2: número */
-  #ate { font-size: 64px; font-weight: 700; letter-spacing: 12px; color: var(--texto-suave); opacity: 0; margin-bottom: -10px; }
+  #bloco-numero { display: flex; flex-direction: column; align-items: center; }
+  #ate { font-size: 60px; font-weight: 700; letter-spacing: 14px; color: var(--texto-suave); opacity: 0; margin-bottom: -6px; }
   #numero {
     font-size: 400px; font-weight: 900; line-height: 1; letter-spacing: -12px;
-    font-variant-numeric: tabular-nums; color: var(--acento);
-    text-shadow: 0 0 80px rgba(238,106,36,.45);
-    opacity: 0;
+    font-variant-numeric: tabular-nums; opacity: 0;
   }
   #numero small { font-size: 220px; letter-spacing: 0; }
   #anel {
-    position: absolute; left: 50%; top: 46%; width: 700px; height: 700px; border-radius: 50%;
-    border: 8px solid var(--acento); transform: translate(-50%, -50%) scale(.6); opacity: 0;
+    position: absolute; left: 50%; top: 46%; width: 720px; height: 720px; border-radius: 50%;
+    border: 8px solid var(--neon); box-shadow: 0 0 40px var(--neon), inset 0 0 40px var(--neon);
+    transform: translate(-50%, -50%) scale(.6); opacity: 0;
   }
-  #legenda { margin-top: 40px; font-size: 72px; font-weight: 700; line-height: 1.18; }
+  #legenda { margin-top: 30px; font-size: 70px; font-weight: 700; line-height: 1.18; }
   #legenda .linha { display: block; opacity: 0; }
-  #legenda .quente { color: var(--acento-claro); }
 
-  /* Cena 3: virada */
-  #virada1 { font-size: 120px; font-weight: 900; letter-spacing: -2px; opacity: 0; }
-  #virada2 { margin-top: 40px; font-size: 96px; font-weight: 700; line-height: 1.15; opacity: 0; }
-  #virada2 .marca { position: relative; isolation: isolate; display: inline-block; padding: 0 18px; color: var(--fundo); }
-  #virada2 .marca::before { content: ""; position: absolute; inset: 6px 0; background: var(--acento); border-radius: 10px; z-index: -1; transform: scaleX(var(--grifo, 0)); transform-origin: left; }
-  #virada2 .marca span { position: relative; z-index: 1; }
+  /* Cena 3: 8 em cada 10 (grade de 100 bolinhas) */
+  #c3 { justify-content: flex-start; padding-top: 330px; }
+  #titulo-grade { font-size: 92px; font-weight: 900; letter-spacing: -2px; line-height: 1.05; opacity: 0; }
+  #titulo-grade .neon { font-size: 140px; }
+  #grade { margin-top: 80px; display: grid; grid-template-columns: repeat(10, 64px); gap: 26px; }
+  #grade i { width: 64px; height: 64px; border-radius: 50%; background: #23262B; opacity: 0; }
+  #grade i.acesa { --aceso: 0; background: color-mix(in srgb, var(--neon) calc(var(--aceso) * 100%), #23262B); box-shadow: 0 0 calc(var(--aceso) * 26px) rgba(var(--neon-rgb), calc(var(--aceso) * .9)); }
+  #rodape-grade { margin-top: 70px; font-size: 54px; font-weight: 500; color: var(--texto-suave); opacity: 0; }
 
-  /* Cena 4: chamada para compartilhar */
-  #cta1 { font-size: 92px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; opacity: 0; }
-  #cta1 .quente { color: var(--acento); }
+  /* Cena 4: virada + grifo */
+  #virada1 { font-size: 108px; white-space: nowrap; font-weight: 900; letter-spacing: -3px; opacity: 0; }
+  #virada2 { margin-top: 50px; font-size: 84px; white-space: nowrap; font-weight: 700; line-height: 1.15; opacity: 0; }
+  #virada2 .marca { position: relative; isolation: isolate; display: inline-block; padding: 0 20px; color: var(--fundo); }
+  #virada2 .marca::before {
+    content: ""; position: absolute; inset: 6px 0; background: var(--neon); border-radius: 12px; z-index: -1;
+    box-shadow: 0 0 40px rgba(var(--neon-rgb), .8);
+    transform: scaleX(var(--grifo, 0)); transform-origin: left;
+  }
+
+  /* Cena 5: chamada para compartilhar */
+  #cta1 { font-size: 94px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; }
+  #cta1 .w { display: inline-block; opacity: 0; }
   #cta2 { margin-top: 48px; font-size: 54px; font-weight: 500; color: var(--texto-suave); opacity: 0; }
-  #seta { margin-top: 70px; width: 170px; height: 170px; opacity: 0; }
-  #seta circle { fill: var(--acento); }
-  #seta path { fill: none; stroke: var(--fundo); stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+  #seta { margin-top: 80px; width: 180px; height: 180px; opacity: 0; filter: drop-shadow(0 0 30px rgba(var(--neon-rgb), .9)); }
+  #seta circle { fill: var(--neon); }
+  #seta path { fill: none; stroke: var(--fundo); stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; }
 </style>
 </head>
 <body>
 <div id="palco">
-  <div id="brilho"></div>
-  <svg id="ondas" viewBox="0 0 1080 2400" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M140 2400 C 60 2200, 220 2000, 140 1800 S 220 1400, 140 1200 S 60 800, 140 600 S 220 200, 140 0"/>
-    <path d="M400 2400 C 320 2200, 480 2000, 400 1800 S 480 1400, 400 1200 S 320 800, 400 600 S 480 200, 400 0"/>
-    <path d="M680 2400 C 600 2200, 760 2000, 680 1800 S 760 1400, 680 1200 S 600 800, 680 600 S 760 200, 680 0"/>
-    <path d="M940 2400 C 860 2200, 1020 2000, 940 1800 S 1020 1400, 940 1200 S 860 800, 940 600 S 1020 200, 940 0"/>
-  </svg>
+  <div id="camera">
+    <div id="brilho"></div>
+    <canvas id="particulas" width="1080" height="1920"></canvas>
+
+    <div class="cena" id="c1">
+      <div id="calor" class="neon">CALOR</div>
+      <h1 id="gancho">
+        <span class="w">do</span> <span class="w">nada,</span><br>
+        <span class="w">no</span> <span class="w">meio</span> <span class="w">da</span> <span class="w">noite?</span>
+      </h1>
+    </div>
+
+    <div class="cena" id="c2">
+      <div id="anel"></div>
+      <div id="bloco-numero">
+        <div id="ate">ATÉ</div>
+        <div id="numero" class="neon"><span id="valor">0</span><small>%</small></div>
+      </div>
+      <p id="legenda">
+        <span class="linha">das mulheres têm</span>
+        <span class="linha neon">ondas de calor</span>
+        <span class="linha">na menopausa.</span>
+      </p>
+    </div>
+
+    <div class="cena" id="c3">
+      <p id="titulo-grade"><span class="neon">8</span> em cada <span class="neon">10</span></p>
+      <div id="grade"></div>
+      <p id="rodape-grade">Você não está sozinha.</p>
+    </div>
+
+    <div class="cena" id="c4">
+      <p id="virada1" class="neon">Não é frescura.</p>
+      <p id="virada2">E <span class="marca"><span>tem tratamento.</span></span></p>
+    </div>
+
+    <div class="cena" id="c5">
+      <p id="cta1">
+        <span class="w">Envie</span> <span class="w">para</span> <span class="w">uma</span> <span class="w">mulher</span>
+        <span class="w">que</span> <span class="w neon">precisa</span> <span class="w neon">saber</span> <span class="w neon">disso.</span>
+      </p>
+      <p id="cta2">Salve para não esquecer.</p>
+      <svg id="seta" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="50"/>
+        <path d="M30 52 L70 32 L58 72 L50 54 Z"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="vinheta"></div>
+  <div id="cortina"></div>
   <div id="progresso"><i></i></div>
-
-  <div class="cena" id="c1">
-    <h1 id="gancho">
-      <span class="w quente">Calor</span> <span class="w">do</span> <span class="w">nada,</span><br>
-      <span class="w">no</span> <span class="w">meio</span> <span class="w">da</span> <span class="w">noite?</span>
-    </h1>
-  </div>
-
-  <div class="cena" id="c2">
-    <div id="anel"></div>
-    <div id="ate">ATÉ</div>
-    <div id="numero"><span id="valor">0</span><small>%</small></div>
-    <p id="legenda">
-      <span class="linha">das mulheres têm</span>
-      <span class="linha quente">ondas de calor</span>
-      <span class="linha">na menopausa.</span>
-    </p>
-  </div>
-
-  <div class="cena" id="c3">
-    <p id="virada1">Não é frescura.</p>
-    <p id="virada2">E <span class="marca"><span>tem tratamento.</span></span></p>
-  </div>
-
-  <div class="cena" id="c4">
-    <p id="cta1">Envie para uma mulher que <span class="quente">precisa saber disso.</span></p>
-    <p id="cta2">Salve para não esquecer.</p>
-    <svg id="seta" viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="50"/>
-      <path d="M30 52 L70 32 L58 72 L50 54 Z"/>
-    </svg>
-  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -133,47 +174,143 @@
   }
   addEventListener("resize", ajustar); ajustar();
 
-  const DURACAO = 11;
-  const render = new URLSearchParams(location.search).has("render");
-  const tl = gsap.timeline({ paused: true });
+  // Grade 10x10: as 80 primeiras (ordem de leitura) acendem
+  const grade = document.getElementById("grade");
+  for (let i = 0; i < 100; i++) {
+    const b = document.createElement("i");
+    if (i < 80) b.className = "acesa";
+    grade.appendChild(b);
+  }
 
-  // Fundo vivo o tempo todo (sem frame parado)
-  tl.to("#ondas", { y: 200, duration: DURACAO, ease: "sine.inOut" }, 0)
+  // ---------- Partículas: tudo é função do tempo, então o vídeo renderiza igual ao preview ----------
+  const ctx = document.getElementById("particulas").getContext("2d");
+  const W = 1080, H = 1920;
+  let semente = 7;
+  const rnd = () => (semente = (semente * 16807) % 2147483647) / 2147483647;
+
+  const brasas = Array.from({ length: 90 }, () => ({
+    x: rnd() * W, vel: 90 + rnd() * 220, fase: rnd() * 10, amp: 10 + rnd() * 40,
+    freq: .6 + rnd() * 1.4, r: 2 + rnd() * 6, desloc: rnd() * (H + 200)
+  }));
+  const BURST_T = 4.1, BURST_X = W / 2, BURST_Y = 860;
+  const faiscas = Array.from({ length: 110 }, () => {
+    const ang = rnd() * Math.PI * 2;
+    return { ang, vel: 500 + rnd() * 1300, r: 3 + rnd() * 8, vida: .7 + rnd() * .9 };
+  });
+
+  const estado = { calor: .35 }; // intensidade das brasas (sobe com o número)
+
+  function desenhar(t) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    // Brasas subindo (ondas de calor)
+    for (const b of brasas) {
+      const ciclo = H + 200;
+      const y = H + 100 - ((t * b.vel * (0.6 + estado.calor) + b.desloc) % ciclo);
+      const x = b.x + Math.sin(t * b.freq + b.fase) * b.amp;
+      const alturaRel = 1 - y / H;               // some ao subir
+      const a = Math.max(0, Math.min(1, (1 - alturaRel) * 1.2)) * estado.calor;
+      ponto(x, y, b.r, a);
+    }
+    // Explosão de faíscas quando o número para
+    const dt = t - BURST_T;
+    if (dt > 0 && dt < 1.8) {
+      for (const f of faiscas) {
+        if (dt > f.vida) continue;
+        const d = f.vel * (1 - Math.exp(-3.2 * dt)) / 3.2;
+        const x = BURST_X + Math.cos(f.ang) * d;
+        const y = BURST_Y + Math.sin(f.ang) * d + 260 * dt * dt; // leve gravidade
+        ponto(x, y, f.r * (1 - dt / f.vida * .5), 1 - dt / f.vida);
+      }
+    }
+  }
+  function ponto(x, y, r, a) {
+    if (a <= 0) return;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r * 4);
+    g.addColorStop(0, `rgba(255,220,228,${a})`);
+    g.addColorStop(.25, `rgba(255,42,79,${a * .9})`);
+    g.addColorStop(1, "rgba(255,42,79,0)");
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r * 4, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // ---------- Linha do tempo ----------
+  const DURACAO = 13;
+  const render = new URLSearchParams(location.search).has("render");
+  const tl = gsap.timeline({ paused: true, onUpdate: () => desenhar(tl.time()) });
+
+  // Piscar de letreiro neon (flicker) — deterministico
+  function piscar(alvo, inicio) {
+    [[0, 1], [.06, .15], [.1, 1], [.18, .3], [.24, 1], [.4, .6], [.45, 1]]
+      .forEach(([dt, o]) => tl.set(alvo, { opacity: o }, inicio + dt));
+  }
+  // Cortina neon de transição (wipe)
+  function cortina(inicio) {
+    tl.fromTo("#cortina", { y: 0 }, { y: -4400, duration: .7, ease: "power4.inOut", immediateRender: false }, inicio);
+  }
+  // Tremor de tela
+  function tremor(inicio, forca) {
+    [[forca, -forca * .6], [-forca * .8, forca * .5], [forca * .5, forca * .4], [-forca * .3, -forca * .2], [0, 0]]
+      .forEach(([x, y], i) => tl.to("#camera", { x, y, duration: .05, ease: "none" }, inicio + i * .05));
+  }
+
+  // Vida o tempo todo: câmera aproxima devagar (Ken Burns) + barra de progresso
+  tl.fromTo("#camera", { scale: 1 }, { scale: 1.05, duration: DURACAO, ease: "sine.inOut" }, 0)
     .to("#progresso i", { scaleX: 1, duration: DURACAO, ease: "none" }, 0);
 
-  // Cena 1: gancho palavra por palavra (word reveal)
-  tl.fromTo("#gancho .w", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, stagger: .11, ease: "power2.out" }, .05)
-    .to("#c1", { opacity: 0, y: -80, duration: .3, ease: "power2.in" }, 1.75);
+  // Cena 1: CALOR acende como neon + gancho palavra por palavra
+  piscar("#calor", .05);
+  tl.fromTo("#calor", { scale: 1.12 }, { scale: 1, duration: .8, ease: "power2.out" }, .05)
+    .fromTo("#gancho .w", { opacity: 0, y: 40, filter: "blur(10px)" },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: .32, stagger: .1, ease: "power2.out" }, .55)
+    .to("#c1", { opacity: 0, duration: .01 }, 2.15);
+  cortina(1.8);
 
   // Cena 2: número contando + zoom de impacto (count-up + punch zoom)
   const contador = { v: 0 };
-  tl.to("#ate", { opacity: 1, duration: .3, ease: "power2.out" }, 2.0)
-    .to("#numero", { opacity: 1, duration: .2 }, 2.0)
+  tl.fromTo("#ate", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .3, ease: "power2.out" }, 2.3)
+    .to("#numero", { opacity: 1, duration: .2 }, 2.3)
     .to(contador, {
-      v: 80, duration: 1.6, ease: "power1.out",
+      v: 80, duration: 1.8, ease: "power1.out",
       onUpdate: () => { document.getElementById("valor").textContent = Math.round(contador.v); }
-    }, 2.0)
-    .to("#brilho", { opacity: 1, duration: 1.6, ease: "power1.out" }, 2.0)
-    // punch zoom na hora que o número para
-    .to("#numero", { scale: 1.15, duration: .15, ease: "power2.out" }, 3.6)
-    .to("#numero", { scale: 1, duration: .3, ease: "power2.inOut" }, 3.75)
-    .fromTo("#anel", { opacity: .9, scale: .6 }, { opacity: 0, scale: 1.6, duration: .7, ease: "power2.out", immediateRender: false }, 3.6)
-    .fromTo("#legenda .linha", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: .5, stagger: .1, ease: "power3.out" }, 3.85)
-    .to("#c2", { opacity: 0, scale: .94, duration: .3, ease: "power2.in" }, 6.0)
-    .to("#brilho", { opacity: .15, duration: .6, ease: "power2.inOut" }, 6.0);
+    }, 2.3)
+    .to(estado, { calor: 1, duration: 1.8, ease: "power1.in" }, 2.3)
+    .to("#brilho", { opacity: 1, duration: 1.8, ease: "power1.in" }, 2.3)
+    .to("#numero", { scale: 1.18, duration: .15, ease: "power2.out" }, BURST_T)
+    .to("#numero", { scale: 1, duration: .32, ease: "power2.inOut" }, BURST_T + .15)
+    .fromTo("#anel", { opacity: .95, scale: .55 }, { opacity: 0, scale: 1.8, duration: .8, ease: "power2.out", immediateRender: false }, BURST_T)
+    .fromTo("#legenda .linha", { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: .5, stagger: .1, ease: "power3.out" }, BURST_T + .3)
+    .to(estado, { calor: .55, duration: 1, ease: "power2.inOut" }, BURST_T + .6);
+  tremor(BURST_T, 22);
+  tl.to("#c2", { opacity: 0, scale: .9, filter: "blur(12px)", duration: .35, ease: "power2.in" }, 6.0)
+    .to("#brilho", { opacity: .2, duration: .6, ease: "power2.inOut" }, 6.0);
 
-  // Cena 3: virada + grifo
-  tl.fromTo("#virada1", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(1.7)" }, 6.4)
-    .fromTo("#virada2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4, ease: "power2.out" }, 7.0)
-    .fromTo("#virada2 .marca", { "--grifo": 0 }, { "--grifo": 1, duration: .4, ease: "power2.out" }, 7.35)
-    .to("#c3", { opacity: 0, y: -60, duration: .3, ease: "power2.in" }, 8.55);
+  // Cena 3: 8 em cada 10 — grade de bolinhas
+  tl.fromTo("#titulo-grade", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 6.3)
+    .fromTo("#grade i", { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, duration: .35, ease: "back.out(1.7)", stagger: { each: .006, grid: [10, 10], from: "center" } }, 6.4)
+    .fromTo("#grade i.acesa", { "--aceso": 0 },
+      { "--aceso": 1, duration: .25, ease: "power2.out", stagger: .016 }, 7.0)
+    .fromTo("#grade i.acesa", { scale: 1 }, { scale: 1.12, duration: .3, ease: "sine.inOut", yoyo: true, repeat: 1, stagger: .004, immediateRender: false }, 8.4)
+    .fromTo("#rodape-grade", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .45, ease: "power2.out" }, 8.4)
+    .to("#c3", { opacity: 0, duration: .01 }, 9.65);
+  cortina(9.3);
 
-  // Cena 4: chamada para compartilhar
-  tl.fromTo("#cta1", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 8.85)
-    .fromTo("#cta2", { opacity: 0 }, { opacity: 1, duration: .4, ease: "power2.out" }, 9.25)
-    .fromTo("#seta", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(1.7)" }, 9.4)
-    .to("#seta", { scale: 1.08, duration: .6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 9.8)
+  // Cena 4: virada (neon pisca) + grifo
+  piscar("#virada1", 9.85);
+  tl.fromTo("#virada1", { scale: .85 }, { scale: 1, duration: .5, ease: "back.out(1.7)" }, 9.85)
+    .fromTo("#virada2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4, ease: "power2.out" }, 10.4)
+    .fromTo("#virada2 .marca", { "--grifo": 0 }, { "--grifo": 1, duration: .4, ease: "power2.out" }, 10.7)
+    .to("#c4", { opacity: 0, y: -60, duration: .25, ease: "power2.in" }, 11.55);
+
+  // Cena 5: chamada para compartilhar
+  tl.fromTo("#cta1 .w", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, stagger: .05, ease: "power3.out" }, 11.7)
+    .fromTo("#cta2", { opacity: 0 }, { opacity: 1, duration: .3, ease: "power2.out" }, 12.2)
+    .fromTo("#seta", { opacity: 0, scale: 0, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(2)" }, 12.25)
+    .to("#seta", { scale: 1.1, duration: .2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 12.6)
     .to({}, { duration: .01 }, DURACAO - .01);
+
+  desenhar(0);
 
   window.tl = tl;
   window.DURACAO = DURACAO;
