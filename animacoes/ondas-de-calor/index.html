@@ -11,6 +11,8 @@
     --neon: #FF2A4F;          /* vermelho neon */
     --neon-rgb: 255, 42, 79;
     --neon-nucleo: #FFE3E8;   /* miolo claro do tubo de neon */
+    --neon-traco: #FF6F88;    /* cor do traço dos bonequinhos */
+    --apagado: #2A2D33;
     --fundo: #0A0B0D;
     --texto: #FFFFFF;
     --texto-suave: #A9ADB3;
@@ -59,10 +61,18 @@
   .cena { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 90px; }
   .neon { color: var(--neon-nucleo); text-shadow: var(--brilho-neon); }
 
+  /* Bonequinhos palito em neon */
+  .boneco { overflow: visible; filter: drop-shadow(0 0 6px rgba(var(--neon-rgb), .9)) drop-shadow(0 0 22px rgba(var(--neon-rgb), .6)); }
+  .boneco .traco { fill: none; stroke: var(--neon-traco); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .boneco .fino { stroke-width: 6; }
+  .boneco .cheio { fill: var(--neon-traco); }
+  .boneco text { font-family: "Inter", sans-serif; font-weight: 900; fill: var(--neon-nucleo); }
+
   /* Cena 1: gancho */
-  #calor { font-size: 230px; font-weight: 900; letter-spacing: -6px; line-height: 1; opacity: 0; }
-  #gancho { margin-top: 40px; font-size: 96px; font-weight: 900; line-height: 1.1; letter-spacing: -2px; }
+  #calor { font-size: 200px; font-weight: 900; letter-spacing: -6px; line-height: 1; opacity: 0; }
+  #gancho { margin-top: 30px; font-size: 88px; font-weight: 900; line-height: 1.1; letter-spacing: -2px; }
   #gancho .w { display: inline-block; opacity: 0; }
+  #cama { margin-top: 40px; width: 800px; height: 480px; }
 
   /* Cena 2: número */
   #bloco-numero { display: flex; flex-direction: column; align-items: center; }
@@ -80,14 +90,18 @@
   #legenda { margin-top: 30px; font-size: 70px; font-weight: 700; line-height: 1.18; }
   #legenda .linha { display: block; opacity: 0; }
 
-  /* Cena 3: 8 em cada 10 (grade de 100 bolinhas) */
-  #c3 { justify-content: flex-start; padding-top: 330px; }
+  /* Cena 3: 8 em cada 10 (grade de 100 bonequinhas) */
+  #c3 { justify-content: flex-start; padding-top: 250px; }
   #titulo-grade { font-size: 92px; font-weight: 900; letter-spacing: -2px; line-height: 1.05; opacity: 0; }
   #titulo-grade .neon { font-size: 140px; }
-  #grade { margin-top: 80px; display: grid; grid-template-columns: repeat(10, 64px); gap: 26px; }
-  #grade i { width: 64px; height: 64px; border-radius: 50%; background: #23262B; opacity: 0; }
-  #grade i.acesa { --aceso: 0; background: color-mix(in srgb, var(--neon) calc(var(--aceso) * 100%), #23262B); box-shadow: 0 0 calc(var(--aceso) * 26px) rgba(var(--neon-rgb), calc(var(--aceso) * .9)); }
-  #rodape-grade { margin-top: 70px; font-size: 54px; font-weight: 500; color: var(--texto-suave); opacity: 0; }
+  #grade { margin-top: 60px; display: grid; grid-template-columns: repeat(10, 58px); column-gap: 20px; row-gap: 16px; }
+  #grade svg { width: 58px; height: 84px; opacity: 0; color: var(--apagado); overflow: visible; }
+  #grade svg.acesa {
+    --aceso: 0;
+    color: color-mix(in srgb, var(--neon) calc(var(--aceso) * 100%), var(--apagado));
+    filter: drop-shadow(0 0 calc(var(--aceso) * 12px) rgba(var(--neon-rgb), calc(var(--aceso) * .9)));
+  }
+  #rodape-grade { margin-top: 56px; font-size: 54px; font-weight: 500; color: var(--texto-suave); opacity: 0; }
 
   /* Cena 4: virada + grifo */
   #virada1 { font-size: 108px; white-space: nowrap; font-weight: 900; letter-spacing: -3px; opacity: 0; }
@@ -102,13 +116,23 @@
   /* Cena 5: chamada para compartilhar */
   #cta1 { font-size: 94px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; }
   #cta1 .w { display: inline-block; opacity: 0; }
-  #cta2 { margin-top: 48px; font-size: 54px; font-weight: 500; color: var(--texto-suave); opacity: 0; }
-  #seta { margin-top: 80px; width: 180px; height: 180px; opacity: 0; filter: drop-shadow(0 0 30px rgba(var(--neon-rgb), .9)); }
-  #seta circle { fill: var(--neon); }
-  #seta path { fill: none; stroke: var(--fundo); stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; }
+  #cta2 { margin-top: 40px; font-size: 54px; font-weight: 500; color: var(--texto-suave); opacity: 0; }
+  #entrega { margin-top: 60px; width: 800px; height: 440px; }
+  #amiga { --aceso: 0; }
+  #amiga .traco { stroke: color-mix(in srgb, var(--neon-traco) calc(var(--aceso) * 100%), #5A5E66); }
 </style>
 </head>
 <body>
+<!-- Bonequinha (pictograma) usada na grade 8 em cada 10 -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="mulher" viewBox="0 0 58 84">
+    <circle cx="29" cy="11" r="10" fill="currentColor"/>
+    <path d="M29 24 C 22 24 19 27 18 32 L 9 60 H 49 L 40 32 C 39 27 36 24 29 24 Z" fill="currentColor"/>
+    <rect x="19" y="60" width="7" height="23" rx="3.5" fill="currentColor"/>
+    <rect x="32" y="60" width="7" height="23" rx="3.5" fill="currentColor"/>
+  </symbol>
+</svg>
+
 <div id="palco">
   <div id="camera">
     <div id="brilho"></div>
@@ -120,6 +144,40 @@
         <span class="w">do</span> <span class="w">nada,</span><br>
         <span class="w">no</span> <span class="w">meio</span> <span class="w">da</span> <span class="w">noite?</span>
       </h1>
+      <!-- Bonequinha na cama: acorda assustada e se abana -->
+      <svg id="cama" class="boneco" viewBox="0 0 800 480" aria-hidden="true">
+        <g id="moveis">
+          <path class="traco" pathLength="1" d="M90 235 V 440"/>
+          <path class="traco" pathLength="1" d="M90 345 H 720 V 390 H 90"/>
+          <path class="traco" pathLength="1" d="M720 390 V 440 M 110 390 V 440"/>
+          <ellipse class="traco fino" pathLength="1" cx="205" cy="335" rx="62" ry="13"/>
+        </g>
+        <g id="pernas">
+          <path class="traco" pathLength="1" d="M380 318 L 560 322 L 700 330"/>
+          <path class="traco fino" pathLength="1" d="M350 300 C 450 262, 610 262, 715 312"/>
+        </g>
+        <g id="tronco">
+          <path class="traco" pathLength="1" d="M380 318 V 192"/>
+          <circle class="traco" pathLength="1" cx="380" cy="150" r="36"/>
+          <path class="traco fino" pathLength="1" d="M380 208 L 402 288"/>
+          <g id="braco-abana">
+            <path class="traco" pathLength="1" d="M380 208 V 292"/>
+          </g>
+        </g>
+        <g id="zzz">
+          <text x="250" y="250" font-size="40" opacity="0">z</text>
+          <text x="280" y="212" font-size="52" opacity="0">z</text>
+          <text x="316" y="168" font-size="64" opacity="0">z</text>
+        </g>
+        <text id="susto" x="452" y="118" font-size="110" opacity="0">!</text>
+        <g id="gotas">
+          <path class="cheio gota" d="M0 -16 C 6 -6 10 0 10 5 A 10 10 0 0 1 -10 5 C -10 0 -6 -6 0 -16 Z" opacity="0"/>
+          <path class="cheio gota" d="M0 -16 C 6 -6 10 0 10 5 A 10 10 0 0 1 -10 5 C -10 0 -6 -6 0 -16 Z" opacity="0"/>
+          <path class="cheio gota" d="M0 -16 C 6 -6 10 0 10 5 A 10 10 0 0 1 -10 5 C -10 0 -6 -6 0 -16 Z" opacity="0"/>
+          <path class="cheio gota" d="M0 -16 C 6 -6 10 0 10 5 A 10 10 0 0 1 -10 5 C -10 0 -6 -6 0 -16 Z" opacity="0"/>
+          <path class="cheio gota" d="M0 -16 C 6 -6 10 0 10 5 A 10 10 0 0 1 -10 5 C -10 0 -6 -6 0 -16 Z" opacity="0"/>
+        </g>
+      </svg>
     </div>
 
     <div class="cena" id="c2">
@@ -152,9 +210,28 @@
         <span class="w">que</span> <span class="w neon">precisa</span> <span class="w neon">saber</span> <span class="w neon">disso.</span>
       </p>
       <p id="cta2">Salve para não esquecer.</p>
-      <svg id="seta" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="50"/>
-        <path d="M30 52 L70 32 L58 72 L50 54 Z"/>
+      <!-- Uma bonequinha entrega o celular para a outra, que acende -->
+      <svg id="entrega" class="boneco" viewBox="0 0 800 440" aria-hidden="true">
+        <g id="voce">
+          <circle class="traco" pathLength="1" cx="250" cy="150" r="34"/>
+          <path class="traco" pathLength="1" d="M250 186 V 300"/>
+          <path class="traco" pathLength="1" d="M250 300 L 215 405 M 250 300 L 285 405"/>
+          <path class="traco fino" pathLength="1" d="M250 206 L 212 286"/>
+          <path id="braco-voce" class="traco" pathLength="1" d="M250 206 V 296"/>
+        </g>
+        <g id="amiga">
+          <circle class="traco" pathLength="1" cx="550" cy="150" r="34"/>
+          <path class="traco" pathLength="1" d="M550 186 V 300"/>
+          <path class="traco" pathLength="1" d="M550 300 L 515 405 M 550 300 L 585 405"/>
+          <path class="traco fino" pathLength="1" d="M550 206 L 588 286"/>
+          <path id="braco-amiga" class="traco" pathLength="1" d="M550 206 V 296"/>
+        </g>
+        <g id="celular" opacity="0">
+          <rect class="traco fino" pathLength="1" x="-16" y="-27" width="32" height="54" rx="7" style="stroke-dashoffset:0"/>
+          <circle class="cheio" cx="0" cy="18" r="3.5"/>
+        </g>
+        <path id="coracao" class="cheio" opacity="0"
+          d="M0 14 C -26 -4 -26 -26 -12 -30 C -4 -32 0 -26 0 -22 C 0 -26 4 -32 12 -30 C 26 -26 26 -4 0 14 Z"/>
       </svg>
     </div>
   </div>
@@ -174,12 +251,11 @@
   }
   addEventListener("resize", ajustar); ajustar();
 
-  // Grade 10x10: as 80 primeiras (ordem de leitura) acendem
+  // Grade 10x10 de bonequinhas: as 80 primeiras (ordem de leitura) acendem
   const grade = document.getElementById("grade");
   for (let i = 0; i < 100; i++) {
-    const b = document.createElement("i");
-    if (i < 80) b.className = "acesa";
-    grade.appendChild(b);
+    grade.insertAdjacentHTML("beforeend",
+      `<svg viewBox="0 0 58 84"${i < 80 ? ' class="acesa"' : ""}><use href="#mulher"/></svg>`);
   }
 
   // ---------- Partículas: tudo é função do tempo, então o vídeo renderiza igual ao preview ----------
@@ -192,7 +268,7 @@
     x: rnd() * W, vel: 90 + rnd() * 220, fase: rnd() * 10, amp: 10 + rnd() * 40,
     freq: .6 + rnd() * 1.4, r: 2 + rnd() * 6, desloc: rnd() * (H + 200)
   }));
-  const BURST_T = 4.1, BURST_X = W / 2, BURST_Y = 860;
+  const BURST_T = 5.2, BURST_X = W / 2, BURST_Y = 860;
   const faiscas = Array.from({ length: 110 }, () => {
     const ang = rnd() * Math.PI * 2;
     return { ang, vel: 500 + rnd() * 1300, r: 3 + rnd() * 8, vida: .7 + rnd() * .9 };
@@ -235,7 +311,7 @@
   }
 
   // ---------- Linha do tempo ----------
-  const DURACAO = 13;
+  const DURACAO = 15.4;
   const render = new URLSearchParams(location.search).has("render");
   const tl = gsap.timeline({ paused: true, onUpdate: () => desenhar(tl.time()) });
 
@@ -253,61 +329,99 @@
     [[forca, -forca * .6], [-forca * .8, forca * .5], [forca * .5, forca * .4], [-forca * .3, -forca * .2], [0, 0]]
       .forEach(([x, y], i) => tl.to("#camera", { x, y, duration: .05, ease: "none" }, inicio + i * .05));
   }
+  // Traço se desenhando (draw-on)
+  function tracar(alvo, inicio, duracao = .5, stagger = .06) {
+    tl.fromTo(alvo, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: duracao, ease: "power1.inOut", stagger }, inicio);
+  }
 
   // Vida o tempo todo: câmera aproxima devagar (Ken Burns) + barra de progresso
   tl.fromTo("#camera", { scale: 1 }, { scale: 1.05, duration: DURACAO, ease: "sine.inOut" }, 0)
     .to("#progresso i", { scaleX: 1, duration: DURACAO, ease: "none" }, 0);
 
-  // Cena 1: CALOR acende como neon + gancho palavra por palavra
+  // ===== Cena 1: CALOR acende como neon + bonequinha acorda com calor =====
+  gsap.set("#tronco", { rotation: -90, svgOrigin: "380 318" });   // começa deitada
   piscar("#calor", .05);
   tl.fromTo("#calor", { scale: 1.12 }, { scale: 1, duration: .8, ease: "power2.out" }, .05)
     .fromTo("#gancho .w", { opacity: 0, y: 40, filter: "blur(10px)" },
-      { opacity: 1, y: 0, filter: "blur(0px)", duration: .32, stagger: .1, ease: "power2.out" }, .55)
-    .to("#c1", { opacity: 0, duration: .01 }, 2.15);
-  cortina(1.8);
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: .32, stagger: .1, ease: "power2.out" }, .55);
+  tracar("#moveis .traco", 0, .55, .05);
+  tracar("#pernas .traco, #tronco .traco", .15, .5, .04);
+  // dormindo: zzz sobe
+  tl.fromTo("#zzz text", { opacity: 0, y: 10 }, { opacity: 1, y: -10, duration: .3, stagger: .12, ease: "power2.out" }, .45)
+    .to("#zzz text", { opacity: 0, duration: .12 }, 1.12);
+  // susto: senta de uma vez (passa do ponto e volta)
+  tl.to("#tronco", { rotation: 0, svgOrigin: "380 318", duration: .38, ease: "back.out(2.2)" }, 1.15)
+    .fromTo("#susto", { opacity: 0, scale: 0, svgOrigin: "470 80" }, { opacity: 1, scale: 1, svgOrigin: "470 80", duration: .3, ease: "back.out(3)" }, 1.4)
+    .to("#susto", { opacity: 0, duration: .2 }, 2.15);
+  // gotas de suor saltando da cabeça (duas levas)
+  const saltos = [[-70, -70], [-30, -95], [40, -100], [75, -65], [-95, -30]];
+  [1.45, 2.15].forEach(inicio => {
+    document.querySelectorAll(".gota").forEach((g, i) => {
+      const [dx, dy] = saltos[i];
+      const t0 = inicio + i * .04;
+      tl.set(g, { x: 380, y: 140, opacity: 1, scale: .8 }, t0)
+        .to(g, { x: 380 + dx * 1.6, duration: .6, ease: "none" }, t0)
+        .to(g, { keyframes: [{ y: 140 + dy, duration: .25, ease: "power1.out" }, { y: 140 + dy + 90, duration: .35, ease: "power1.in" }] }, t0)
+        .to(g, { opacity: 0, duration: .15 }, t0 + .45);
+    });
+  });
+  // abanando o rosto com a mão
+  tl.to("#braco-abana", { rotation: -150, svgOrigin: "380 208", duration: .25, ease: "power2.out" }, 1.5)
+    .fromTo("#braco-abana", { rotation: -150 }, { rotation: -125, svgOrigin: "380 208", duration: .14, ease: "sine.inOut", yoyo: true, repeat: 7, immediateRender: false }, 1.75);
+  tl.to("#c1", { opacity: 0, duration: .01 }, 3.25);
+  cortina(2.9);
 
-  // Cena 2: número contando + zoom de impacto (count-up + punch zoom)
+  // ===== Cena 2: número contando + zoom de impacto (count-up + punch zoom) =====
   const contador = { v: 0 };
-  tl.fromTo("#ate", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .3, ease: "power2.out" }, 2.3)
-    .to("#numero", { opacity: 1, duration: .2 }, 2.3)
+  tl.fromTo("#ate", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .3, ease: "power2.out" }, 3.4)
+    .to("#numero", { opacity: 1, duration: .2 }, 3.4)
     .to(contador, {
       v: 80, duration: 1.8, ease: "power1.out",
       onUpdate: () => { document.getElementById("valor").textContent = Math.round(contador.v); }
-    }, 2.3)
-    .to(estado, { calor: 1, duration: 1.8, ease: "power1.in" }, 2.3)
-    .to("#brilho", { opacity: 1, duration: 1.8, ease: "power1.in" }, 2.3)
+    }, 3.4)
+    .to(estado, { calor: 1, duration: 1.8, ease: "power1.in" }, 3.4)
+    .to("#brilho", { opacity: 1, duration: 1.8, ease: "power1.in" }, 3.4)
     .to("#numero", { scale: 1.18, duration: .15, ease: "power2.out" }, BURST_T)
     .to("#numero", { scale: 1, duration: .32, ease: "power2.inOut" }, BURST_T + .15)
     .fromTo("#anel", { opacity: .95, scale: .55 }, { opacity: 0, scale: 1.8, duration: .8, ease: "power2.out", immediateRender: false }, BURST_T)
     .fromTo("#legenda .linha", { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: .5, stagger: .1, ease: "power3.out" }, BURST_T + .3)
     .to(estado, { calor: .55, duration: 1, ease: "power2.inOut" }, BURST_T + .6);
   tremor(BURST_T, 22);
-  tl.to("#c2", { opacity: 0, scale: .9, filter: "blur(12px)", duration: .35, ease: "power2.in" }, 6.0)
-    .to("#brilho", { opacity: .2, duration: .6, ease: "power2.inOut" }, 6.0);
+  tl.to("#c2", { opacity: 0, scale: .9, filter: "blur(12px)", duration: .35, ease: "power2.in" }, 7.1)
+    .to("#brilho", { opacity: .2, duration: .6, ease: "power2.inOut" }, 7.1);
 
-  // Cena 3: 8 em cada 10 — grade de bolinhas
-  tl.fromTo("#titulo-grade", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 6.3)
-    .fromTo("#grade i", { opacity: 0, scale: 0 },
-      { opacity: 1, scale: 1, duration: .35, ease: "back.out(1.7)", stagger: { each: .006, grid: [10, 10], from: "center" } }, 6.4)
-    .fromTo("#grade i.acesa", { "--aceso": 0 },
-      { "--aceso": 1, duration: .25, ease: "power2.out", stagger: .016 }, 7.0)
-    .fromTo("#grade i.acesa", { scale: 1 }, { scale: 1.12, duration: .3, ease: "sine.inOut", yoyo: true, repeat: 1, stagger: .004, immediateRender: false }, 8.4)
-    .fromTo("#rodape-grade", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .45, ease: "power2.out" }, 8.4)
-    .to("#c3", { opacity: 0, duration: .01 }, 9.65);
-  cortina(9.3);
+  // ===== Cena 3: 8 em cada 10 — grade de bonequinhas =====
+  tl.fromTo("#titulo-grade", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 7.4)
+    .fromTo("#grade svg", { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, duration: .35, ease: "back.out(1.7)", stagger: { each: .006, grid: [10, 10], from: "center" } }, 7.5)
+    .fromTo("#grade svg.acesa", { "--aceso": 0 },
+      { "--aceso": 1, duration: .25, ease: "power2.out", stagger: .016 }, 8.1)
+    .fromTo("#grade svg.acesa", { y: 0 }, { y: -10, duration: .15, ease: "power2.out", yoyo: true, repeat: 1, stagger: .004, immediateRender: false }, 9.5)
+    .fromTo("#rodape-grade", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .45, ease: "power2.out" }, 9.5)
+    .to("#c3", { opacity: 0, duration: .01 }, 10.75);
+  cortina(10.4);
 
-  // Cena 4: virada (neon pisca) + grifo
-  piscar("#virada1", 9.85);
-  tl.fromTo("#virada1", { scale: .85 }, { scale: 1, duration: .5, ease: "back.out(1.7)" }, 9.85)
-    .fromTo("#virada2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4, ease: "power2.out" }, 10.4)
-    .fromTo("#virada2 .marca", { "--grifo": 0 }, { "--grifo": 1, duration: .4, ease: "power2.out" }, 10.7)
-    .to("#c4", { opacity: 0, y: -60, duration: .25, ease: "power2.in" }, 11.55);
+  // ===== Cena 4: virada (neon pisca) + grifo =====
+  piscar("#virada1", 10.95);
+  tl.fromTo("#virada1", { scale: .85 }, { scale: 1, duration: .5, ease: "back.out(1.7)" }, 10.95)
+    .fromTo("#virada2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4, ease: "power2.out" }, 11.5)
+    .fromTo("#virada2 .marca", { "--grifo": 0 }, { "--grifo": 1, duration: .4, ease: "power2.out" }, 11.8)
+    .to("#c4", { opacity: 0, y: -60, duration: .25, ease: "power2.in" }, 12.65);
 
-  // Cena 5: chamada para compartilhar
-  tl.fromTo("#cta1 .w", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, stagger: .05, ease: "power3.out" }, 11.7)
-    .fromTo("#cta2", { opacity: 0 }, { opacity: 1, duration: .3, ease: "power2.out" }, 12.2)
-    .fromTo("#seta", { opacity: 0, scale: 0, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(2)" }, 12.25)
-    .to("#seta", { scale: 1.1, duration: .2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 12.6)
+  // ===== Cena 5: chamada + bonequinha entrega o celular para a amiga =====
+  tl.fromTo("#cta1 .w", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, stagger: .05, ease: "power3.out" }, 12.8)
+    .fromTo("#cta2", { opacity: 0 }, { opacity: 1, duration: .3, ease: "power2.out" }, 13.3);
+  tracar("#entrega .traco:not(#celular .traco)", 13.0, .45, .03);
+  // braço estende com o celular, que viaja até a mão da amiga
+  tl.to("#braco-voce", { rotation: -80, svgOrigin: "250 206", duration: .3, ease: "power2.out" }, 13.65)
+    .fromTo("#celular", { opacity: 0, x: 339, y: 222, scale: 0, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, 13.8)
+    .to("#braco-amiga", { rotation: 80, svgOrigin: "550 206", duration: .3, ease: "power2.out" }, 13.95)
+    .to("#celular", { x: 461, duration: .4, ease: "power2.inOut" }, 14.1)
+    .to("#braco-voce", { rotation: 0, svgOrigin: "250 206", duration: .3, ease: "power2.inOut" }, 14.4)
+    // a amiga acende ao receber
+    .fromTo("#amiga", { "--aceso": 0 }, { "--aceso": 1, duration: .3, ease: "power2.out" }, 14.45)
+    .fromTo("#coracao", { opacity: 0, x: 550, y: 90, scale: 0, transformOrigin: "50% 50%" }, { opacity: 1, y: 60, scale: 1.6, duration: .35, ease: "back.out(2.5)" }, 14.55)
+    .to("#coracao", { scale: 1.85, duration: .18, ease: "sine.inOut", yoyo: true, repeat: 1 }, 14.95)
     .to({}, { duration: .01 }, DURACAO - .01);
 
   desenhar(0);
