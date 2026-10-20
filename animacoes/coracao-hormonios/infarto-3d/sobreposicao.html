@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&family=Oswald:wght@600&display=swap" rel="stylesheet">
 <style>
   /* Camada transparente desenhada por cima da animação 3D (1080x1920) */
-  :root { --neon: #FF2A4F; --neon-rgb: 255, 42, 79; --neon-nucleo: #FFE3E8; --ambar: #FFB020; }
+  :root { --neon: #FF2A4F; --neon-rgb: 255, 42, 79; --neon-nucleo: #FFE3E8; --ambar: #FFB020; --amarelo: #E6FF3A; --amarelo-rgb: 230, 255, 58; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: transparent; overflow: hidden; }
   body { font-family: "Inter", system-ui, sans-serif; }
@@ -20,8 +20,9 @@
 
   #chamada { position: absolute; top: 110px; left: 0; right: 0; text-align: center; font-size: 34px; font-weight: 900; letter-spacing: 6px; color: var(--neon-nucleo); text-shadow: 0 0 6px rgba(var(--neon-rgb), .9), 0 0 18px rgba(var(--neon-rgb), .8), 0 0 42px rgba(var(--neon-rgb), .6); }
   .etapa { position: absolute; top: 1210px; left: 60px; right: 60px; text-align: center; opacity: 0; }
-  .etapa .num { display: inline-block; width: 84px; height: 84px; line-height: 84px; border-radius: 50%; font-size: 50px; font-weight: 900; color: #0A0B0D; background: var(--neon); box-shadow: 0 0 30px var(--neon); }
-  .etapa h2 { margin-top: 18px; font-size: 76px; font-weight: 900; line-height: 1.02; letter-spacing: -2px; color: #fff; text-shadow: 0 4px 30px rgba(0,0,0,.9); }
+  .etapa .num { display: inline-block; width: 88px; height: 88px; line-height: 88px; border-radius: 50%; font-size: 54px; font-weight: 900; color: #0A0B0D; background: var(--amarelo); box-shadow: 0 0 14px rgba(var(--amarelo-rgb), .9), 0 0 40px rgba(var(--amarelo-rgb), .7); }
+  .etapa h2 { margin-top: 18px; font-size: 70px; font-weight: 900; line-height: 1.04; letter-spacing: -1px; text-transform: uppercase; color: #F6FFD0;
+    text-shadow: 0 0 6px rgba(var(--amarelo-rgb), .95), 0 0 18px rgba(var(--amarelo-rgb), .8), 0 0 42px rgba(var(--amarelo-rgb), .55), 0 4px 30px rgba(0,0,0,.9); }
   .etapa p { margin-top: 14px; font-size: 40px; font-weight: 700; color: var(--neon-nucleo); text-shadow: 0 0 18px rgba(var(--neon-rgb), .9), 0 2px 12px rgba(0,0,0,.9); }
 
   /* rótulos traduzidos que cobrem os originais em espanhol */
