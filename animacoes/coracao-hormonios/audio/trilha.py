@@ -86,11 +86,6 @@ for f in (73.4, 77.8, 110.0, 116.5):                    # cluster grave e desafi
 riser = np.sin(2 * np.pi * np.cumsum(180 + 520 * prog ** 2) / SR)
 mix += (tensao * .05 + riser * .025) * prog * janela(12.5, T_FV, ataque=.8, soltura=.05)
 
-# ---------- ronco de terremoto nas quedas (sincronizado com o tremor da tela) ----------
-for a, b, vol in ((3.8, 6.0, .18), (12.6, 14.6, .55), (15.5, 20.2, .22), (T_FV, T_PLANO, .6)):
-    env = janela(a, b, ataque=.3, soltura=.4)
-    mix += passa_baixa(rng.standard_normal(N), 140) * env * vol * 3
-
 # ---------- infarto ----------
 mix += som(38, T_ISQ, 1.8, 2.2, .8)                     # coágulo: impacto grave e sombrio
 alarme = np.zeros(N)                                    # alarme hospitalar de dois tons

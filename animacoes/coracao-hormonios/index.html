@@ -43,28 +43,28 @@
   #textos p em { font-style: normal; color: var(--neon-nucleo); text-shadow: 0 0 18px rgba(var(--neon-rgb), .8); }
 
   /* Legenda: hormônios grandes */
-  #legenda { position: absolute; top: 350px; left: 60px; right: 60px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 40px; row-gap: 14px; }
-  #legenda span { display: flex; align-items: center; gap: 14px; font-size: 38px; font-weight: 900; letter-spacing: 1px; opacity: 0; }
-  #legenda b { display: block; width: 54px; height: 12px; border-radius: 6px; }
+  #legenda { position: absolute; top: 360px; left: 60px; right: 60px; display: flex; flex-wrap: wrap; justify-content: center; column-gap: 56px; row-gap: 14px; }
+  #legenda span { display: flex; align-items: center; gap: 16px; font-size: 46px; font-weight: 900; letter-spacing: 1px; opacity: 0; }
+  #legenda b { display: block; width: 64px; height: 14px; border-radius: 7px; }
 
-  #grafico { position: absolute; top: 470px; left: 0; width: 1080px; height: 640px; overflow: visible; }
+  #grafico { position: absolute; top: 450px; left: 0; width: 1080px; height: 680px; overflow: visible; }
   #grafico text { font-family: "Inter", sans-serif; }
   .eixo-txt { font-size: 26px; font-weight: 700; fill: var(--texto-suave); }
   .rotulo { font-size: 26px; font-weight: 900; letter-spacing: 2px; }
   #idade { font-size: 96px; font-weight: 900; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
 
   /* Coração em evidência */
-  #bloco-coracao { position: absolute; top: 1130px; left: 0; right: 0; height: 470px; }
-  #coracao { position: absolute; left: 50%; top: 10px; width: 440px; height: 400px; margin-left: -220px; overflow: visible; }
-  #risco { position: absolute; left: 70px; top: 40px; width: 200px; text-align: center; }
+  #bloco-coracao { position: absolute; top: 1190px; left: 0; right: 0; height: 520px; }
+  #coracao { position: absolute; left: 50%; top: 0; width: 520px; height: 470px; margin-left: -260px; overflow: visible; }
+  #risco { position: absolute; left: 40px; top: 50px; width: 190px; text-align: center; }
   #risco .titulo { font-size: 26px; font-weight: 900; letter-spacing: 2px; color: var(--ambar); line-height: 1.2; }
-  #risco .barra { margin: 18px auto 0; width: 54px; height: 250px; border-radius: 27px; border: 4px solid rgba(255,176,32,.5); position: relative; overflow: hidden; }
+  #risco .nivel { margin-top: 16px; font-size: 32px; font-weight: 900; letter-spacing: 2px; }
+  #risco .barra { margin: 18px auto 0; width: 58px; height: 280px; border-radius: 27px; border: 4px solid rgba(255,176,32,.5); position: relative; overflow: hidden; }
   #risco .barra i { position: absolute; left: 0; right: 0; bottom: 0; height: 100%; background: linear-gradient(to top, var(--ambar), var(--neon)); transform-origin: bottom; transform: scaleY(0); box-shadow: 0 0 20px var(--ambar); }
-  #bpm { position: absolute; right: 70px; top: 90px; width: 200px; text-align: center; }
+  #bpm { position: absolute; right: 40px; top: 140px; width: 190px; text-align: center; }
   #bpm b { display: block; font-size: 96px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -2px; }
   #bpm span { font-size: 30px; font-weight: 900; letter-spacing: 6px; color: var(--texto-suave); }
-  #ecg { position: absolute; left: 60px; top: 1600px; width: 960px; height: 150px; }
-  #infarto { position: absolute; left: 0; right: 0; top: 1240px; text-align: center; font-size: 190px; font-weight: 900; letter-spacing: -4px; opacity: 0; }
+    #infarto { position: absolute; left: 0; right: 0; top: 1345px; text-align: center; font-size: 132px; font-weight: 900; letter-spacing: -4px; opacity: 0; }
 
   /* Final */
   #final { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: rgba(10,11,13,.88); opacity: 0; }
@@ -77,24 +77,21 @@
   <div id="camera">
     <p id="chamada" class="neon">O CORPO DA MULHER, DOS 10 AOS 80</p>
     <div id="textos">
-      <p>Puberdade: o <em>estradiol</em> liga.<br>A massa muscular começa a crescer.</p>
-      <p>Aos 20: a <em>testosterona</em> chega ao pico<br>e é a primeira a cair.</p>
-      <p>Aos 30: a <em>massa muscular</em> atinge o pico<br>e começa a escorregar.</p>
+      <p>Puberdade: o <em>estradiol</em> liga<br>e passa a proteger o coração.</p>
+      <p>Dos 20 aos 40: <em>estradiol</em> alto,<br>risco de infarto lá embaixo.</p>
       <p>Aos 40, perimenopausa:<br>o <em>estradiol</em> oscila, não só cai.</p>
       <p>Menopausa, por volta dos 51:<br>o <em>estradiol</em> despenca.</p>
-      <p>Sem hormônio e com menos músculo,<br>o <em>risco de infarto</em> dispara.</p>
-      <p>Prevenção: <em>musculação, proteína</em><br>e <em>reposição hormonal</em> bem indicada.</p>
+      <p>Sem a proteção do estradiol,<br>o <em>risco de infarto</em> dispara.</p>
+      <p>Prevenção: <em>check-up, exercício</em><br>e <em>reposição hormonal</em> bem indicada.</p>
     </div>
     <div id="legenda">
       <span><b style="background:var(--neon);box-shadow:0 0 16px var(--neon)"></b>ESTRADIOL</span>
-      <span><b style="background:var(--ciano);box-shadow:0 0 16px var(--ciano)"></b>TESTOSTERONA</span>
-      <span><b style="background:var(--lima);box-shadow:0 0 16px var(--lima)"></b>MASSA MUSCULAR</span>
       <span style="color:var(--ambar)"><b style="background:repeating-linear-gradient(90deg,var(--ambar) 0 12px,transparent 12px 20px);box-shadow:0 0 16px var(--ambar)"></b>RISCO DE INFARTO</span>
     </div>
-    <svg id="grafico" viewBox="0 0 1080 640"></svg>
+    <svg id="grafico" viewBox="0 0 1080 680"></svg>
 
     <div id="bloco-coracao">
-      <div id="risco"><p class="titulo">RISCO DE<br>INFARTO</p><div class="barra"><i></i></div></div>
+      <div id="risco"><p class="titulo">RISCO DE<br>INFARTO</p><div class="barra"><i></i></div><p class="nivel" id="nivel">BAIXO</p></div>
       <svg id="coracao" viewBox="0 0 400 360" aria-hidden="true">
         <defs>
           <clipPath id="dentro-coracao"><path d="M200 340 C 60 240 0 160 30 90 C 60 20 160 10 200 80 C 240 10 340 20 370 90 C 400 160 340 240 200 340 Z"/></clipPath>
@@ -120,7 +117,6 @@
       </svg>
       <div id="bpm"><b id="bpm-n" class="neon">66</b><span>BPM</span></div>
     </div>
-    <canvas id="ecg" width="960" height="150"></canvas>
     <p id="infarto" class="neon">INFARTO</p>
   </div>
 
@@ -152,12 +148,10 @@
   const curvas = {
     E: a => .06 + .9 * sig((a - 13) / 1.2) * (1 - .93 * sig((a - 50.5) / .8))
                + (a > 41 ? .16 * Math.sin((a - 41) * 2.6) * sino(a, 47, 2.6) : 0),
-    T: a => .05 + .85 * sig((a - 14) / 1.5) * Math.exp(-Math.max(0, a - 21) / 28),
-    M: a => .25 + .65 * sig((a - 18) / 4) - (a > 30 ? .0013 * Math.pow(a - 30, 1.45) : 0) - .05 * sig((a - 51) / 1.5),
     R: a => .04 + .9 * sig((a - 66) / 6)
   };
-  const cores = { E: "#FF2A4F", T: "#2FD3FF", M: "#D4FF3A", R: "#FFB020" };
-  const A0 = 10, A1 = 80, X0 = 90, X1 = 990, YB = 560, YT = 110;
+  const cores = { E: "#FF2A4F", R: "#FFB020" };
+  const A0 = 10, A1 = 80, X0 = 90, X1 = 990, YB = 600, YT = 120;
   const xa = a => X0 + (a - A0) / (A1 - A0) * (X1 - X0);
   const yv = v => YB - Math.max(0, Math.min(1.05, v)) * (YB - YT);
 
@@ -174,17 +168,17 @@
   const grupo = el("g", { "clip-path": "url(#clip-g)" }, svg);
   // perimenopausa e menopausa
   el("rect", { x: xa(42), y: YT - 20, width: xa(51) - xa(42), height: YB - YT + 32, fill: "#FF2A4F", opacity: .1 }, grupo);
-  el("text", { x: xa(46.5), y: YB - 46, "text-anchor": "middle", class: "rotulo", fill: "#FF6F88" }, grupo).textContent = "PERIMENOPAUSA";
+  el("text", { x: xa(46.5), y: YT - 26, "text-anchor": "middle", class: "rotulo", fill: "#FF6F88" }, grupo).textContent = "PERIMENOPAUSA";
   el("line", { x1: xa(51), y1: YT - 20, x2: xa(51), y2: YB + 12, stroke: "#FF6F88", "stroke-width": 3, "stroke-dasharray": "10 10" }, grupo);
-  el("text", { x: xa(51) + 12, y: YB - 14, class: "rotulo", fill: "#FF6F88" }, grupo).textContent = "MENOPAUSA ~51";
+  el("text", { x: xa(51) + 12, y: YT + 18, class: "rotulo", fill: "#FF6F88" }, grupo).textContent = "MENOPAUSA ~51";
   const pontos = {};
-  for (const k of ["M", "T", "E", "R"]) {
+  for (const k of ["E", "R"]) {
     let d = "";
     for (let a = A0; a <= A1 + .001; a += .07) d += (d ? " L" : "M") + xa(a).toFixed(1) + " " + yv(curvas[k](a)).toFixed(1);
     const tracejada = k === "R" ? { "stroke-dasharray": "22 16" } : {};
-    el("path", { d, fill: "none", stroke: cores[k], "stroke-width": 28, opacity: .18, "stroke-linecap": "round", ...tracejada }, grupo);
-    el("path", { d, fill: "none", stroke: cores[k], "stroke-width": 10, "stroke-linecap": "round", "stroke-linejoin": "round", style: `filter: drop-shadow(0 0 12px ${cores[k]})`, ...tracejada }, grupo);
-    pontos[k] = el("circle", { r: 14, fill: cores[k], opacity: 0, style: `filter: drop-shadow(0 0 12px ${cores[k]})` }, svg);
+    el("path", { d, fill: "none", stroke: cores[k], "stroke-width": 34, opacity: .2, "stroke-linecap": "round", ...tracejada }, grupo);
+    el("path", { d, fill: "none", stroke: cores[k], "stroke-width": 13, "stroke-linecap": "round", "stroke-linejoin": "round", style: `filter: drop-shadow(0 0 12px ${cores[k]})`, ...tracejada }, grupo);
+    pontos[k] = el("circle", { r: 17, fill: cores[k], opacity: 0, style: `filter: drop-shadow(0 0 12px ${cores[k]})` }, svg);
   }
 
   // ---------- Batimentos: lista determinística (o áudio usa a mesma) ----------
@@ -218,50 +212,9 @@
     return Math.min(1.3, v);
   }
 
-  // ---------- ECG ----------
-  const ecg = document.getElementById("ecg").getContext("2d");
-  const gauss = (x, mu, s) => Math.exp(-((x - mu) ** 2) / (2 * s * s));
-  function sinalECG(tau) {
-    if (tau >= T_FV && tau < T_PLANO) {           // fibrilação ventricular
-      const k = 1 - .5 * (tau - T_FV) / (T_PLANO - T_FV);
-      return k * (.45 * Math.sin(tau * 2 * Math.PI * 5.3) + .3 * Math.sin(tau * 2 * Math.PI * 7.9 + 1) + .2 * Math.sin(tau * 2 * Math.PI * 3.1 + 2));
-    }
-    if (tau >= T_PLANO && tau < T_VOLTA) return 0;  // linha reta
-    const st = tau > T_ISQ && tau < T_FV ? .4 * Math.min(1, (tau - T_ISQ) / 1) : 0;  // supradesnível de ST
-    let v = 0;
-    for (const b of BATIDAS) {
-      const x = tau - b;
-      if (x < -.3) break;
-      if (x > .5) continue;
-      v += .12 * gauss(x, -.16, .025) - .12 * gauss(x, -.03, .01) + 1 * gauss(x, 0, .012) - .28 * gauss(x, .03, .012)
-         + .3 * gauss(x, .22, .05) + st * (x > .04 && x < .26 ? 1 : 0) * gauss(x, .15, .07) * 1.4;
-    }
-    return v;
-  }
-  function desenharECG(t) {
-    const W = 960, H = 150, janela = 3;
-    ecg.clearRect(0, 0, W, H);
-    ecg.strokeStyle = "rgba(255,255,255,.08)"; ecg.lineWidth = 1;
-    for (let x = 0; x < W; x += 40) { ecg.beginPath(); ecg.moveTo(x, 0); ecg.lineTo(x, H); ecg.stroke(); }
-    ecg.beginPath();
-    for (let x = 0; x <= W; x += 2) {
-      const tau = t - janela + (x / W) * janela;
-      const y = H * .62 - sinalECG(tau) * H * .5;
-      x ? ecg.lineTo(x, y) : ecg.moveTo(x, y);
-    }
-    ecg.strokeStyle = "#FF6F88"; ecg.lineWidth = 5; ecg.lineJoin = "round";
-    ecg.shadowColor = "#FF2A4F"; ecg.shadowBlur = 18;
-    ecg.stroke(); ecg.shadowBlur = 0;
-    // cabeça do traço
-    const yh = H * .62 - sinalECG(t) * H * .5;
-    ecg.fillStyle = "#FFE3E8"; ecg.beginPath(); ecg.arc(W - 4, yh, 7, 0, Math.PI * 2); ecg.fill();
-  }
-
   // ---------- Estado e atualização por quadro ----------
   const estado = { idade: 10, isquemia: 0, coagulo: 0, alarme: 0, apagado: 0, risco: 0 };
-  const camera = document.getElementById("camera");
   const vivo = document.getElementById("coracao-vivo");
-  function derivada(f, a) { return (f(Math.min(80, a + .25)) - f(Math.max(10, a - .25))) / .5; }
 
   function atualizar(t) {
     const a = estado.idade;
@@ -271,16 +224,12 @@
       pontos[k].setAttribute("opacity", a > 10.05 ? 1 : 0);
     }
     idadeTxt.textContent = "IDADE " + Math.round(a);
-    document.querySelector("#risco .barra i").style.transform = `scaleY(${curvas.R(a).toFixed(3)})`;
-
-    // tremor: proporcional à velocidade de queda dos hormônios e da massa muscular
-    const queda = 90 * Math.max(0, -derivada(curvas.E, a)) + 250 * Math.max(0, -derivada(curvas.T, a)) + 600 * Math.max(0, -derivada(curvas.M, a));
-    const andando = t > 1.2 && t < 24 ? 1 : 0;
-    let amp = Math.min(28, queda) * andando;
-    if (t >= T_FV && t < T_PLANO) amp = Math.max(amp, 18);   // fibrilação: tela em convulsão
-    camera.style.transform = amp > .05
-      ? `translate(${(amp * Math.sin(t * 73)).toFixed(2)}px, ${(amp * .7 * Math.cos(t * 61)).toFixed(2)}px) rotate(${(amp * .03 * Math.sin(t * 47)).toFixed(3)}deg)`
-      : "none";
+    const r = curvas.R(a);
+    document.querySelector("#risco .barra i").style.transform = `scaleY(${r.toFixed(3)})`;
+    const nivel = document.getElementById("nivel");
+    nivel.textContent = r < .25 ? "BAIXO" : r < .55 ? "MODERADO" : "ALTO";
+    nivel.style.color = r < .25 ? "#7CF29A" : r < .55 ? "#FFB020" : "#FF2A4F";
+    nivel.style.textShadow = `0 0 16px ${nivel.style.color}`;
 
     // coração
     let escala, bpm;
@@ -302,7 +251,6 @@
     // alarme pisca em vermelho durante o infarto
     const piscaAlarme = estado.alarme * (.5 + .5 * Math.sign(Math.sin(t * Math.PI * 4)));
     document.getElementById("alarme").style.opacity = piscaAlarme.toFixed(2);
-    desenharECG(t);
   }
 
   // ---------- Linha do tempo ----------
@@ -322,10 +270,10 @@
 
   // idade avançando por fases
   const fases = [
-    [1.2, 3.6, 19], [3.6, 6.2, 30], [6.2, 9.0, 43], [9.0, 12.5, 51], [12.5, 15.5, 58], [15.5, 20.4, 72], [20.4, 23.0, 80]
+    [1.2, 3.6, 19], [3.6, 9.0, 41], [9.0, 12.5, 51], [12.5, 15.5, 58], [15.5, 20.4, 72], [20.4, 23.0, 80]
   ];
   fases.forEach(([a, b, idade]) => tl.to(estado, { idade, duration: b - a, ease: "sine.inOut" }, a));
-  texto(1, 1.2, 3.45); texto(2, 3.6, 6.05); texto(3, 6.2, 8.85); texto(4, 9.0, 12.35); texto(5, 12.5, 15.35); texto(6, 15.5, 24.2); texto(7, 24.6, 28.2);
+  texto(1, 1.2, 3.45); texto(2, 3.6, 8.85); texto(3, 9.0, 12.35); texto(4, 12.5, 15.35); texto(5, 15.5, 24.2); texto(6, 24.6, 28.2);
   // marcador de idade dá um tranco na menopausa
   tl.to("#idade", { scale: 1.15, transformOrigin: "0% 50%", duration: .15, ease: "power2.out" }, 13.2)
     .to("#idade", { scale: 1, duration: .3, ease: "power2.inOut" }, 13.35);
