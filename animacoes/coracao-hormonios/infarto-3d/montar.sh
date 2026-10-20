@@ -4,7 +4,7 @@ set -e
 S=/tmp/claude-0/-home-user-site-palau/aa0c7d38-7a04-54b3-80d5-643ce013a61c/scratchpad
 M=/home/user/site-palau/animacoes/coracao-hormonios
 cd $S
-node comp.mjs $S/infarto-3d-original.mp4 $M/infarto-3d/sobreposicao.html $S/seg2.mp4 $M/infarto-3d > comp.log 2>&1
+[ -n "$SKIP_COMP" ] || node comp.mjs $S/infarto-3d-original.mp4 $M/infarto-3d/sobreposicao.html $S/seg2.mp4 $M/infarto-3d > comp.log 2>&1
 python3 -I $M/infarto-3d/trilha_3d.py $M/infarto-3d/batidas-3d.json $S/seg2.wav
 TOTAL=42.65
 ffmpeg -v error -y -i $S/coracao-mudo.mp4 -i $S/seg2.mp4 -i $S/coracao-trilha.wav -i $S/seg2.wav -filter_complex "\
