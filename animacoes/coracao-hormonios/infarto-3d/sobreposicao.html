@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infarto 3D: Legendas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&family=Oswald:wght@600&display=swap" rel="stylesheet">
+<style>
+  /* Camada transparente desenhada por cima da animação 3D (1080x1920) */
+  :root { --neon: #FF2A4F; --neon-rgb: 255, 42, 79; --neon-nucleo: #FFE3E8; --ambar: #FFB020; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: transparent; overflow: hidden; }
+  body { font-family: "Inter", system-ui, sans-serif; }
+  #palco { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+  .sombra-topo { position: absolute; left: 0; right: 0; top: 0; height: 260px; background: linear-gradient(rgba(5,5,7,.92), rgba(5,5,7,.6) 55%, transparent); }
+  .sombra-base { position: absolute; left: 0; right: 0; bottom: 0; height: 860px; background: linear-gradient(transparent, rgba(5,5,7,.8) 35%, rgba(5,5,7,.95)); }
+  #progresso { position: absolute; top: 0; left: 0; height: 10px; width: 100%; background: rgba(255,255,255,.1); }
+  #progresso i { display: block; height: 100%; width: 100%; background: var(--neon); box-shadow: 0 0 18px var(--neon); transform-origin: left; transform: scaleX(0); }
+
+  #chamada { position: absolute; top: 110px; left: 0; right: 0; text-align: center; font-size: 34px; font-weight: 900; letter-spacing: 6px; color: var(--neon-nucleo); text-shadow: 0 0 6px rgba(var(--neon-rgb), .9), 0 0 18px rgba(var(--neon-rgb), .8), 0 0 42px rgba(var(--neon-rgb), .6); }
+  .etapa { position: absolute; top: 1210px; left: 60px; right: 60px; text-align: center; opacity: 0; }
+  .etapa .num { display: inline-block; width: 84px; height: 84px; line-height: 84px; border-radius: 50%; font-size: 50px; font-weight: 900; color: #0A0B0D; background: var(--neon); box-shadow: 0 0 30px var(--neon); }
+  .etapa h2 { margin-top: 18px; font-size: 76px; font-weight: 900; line-height: 1.02; letter-spacing: -2px; color: #fff; text-shadow: 0 4px 30px rgba(0,0,0,.9); }
+  .etapa p { margin-top: 14px; font-size: 40px; font-weight: 700; color: var(--neon-nucleo); text-shadow: 0 0 18px rgba(var(--neon-rgb), .9), 0 2px 12px rgba(0,0,0,.9); }
+
+  /* rótulos traduzidos que cobrem os originais em espanhol */
+  .rotulo { position: absolute; padding: 8px 16px; border-radius: 14px; background: rgba(10,11,13,.78); opacity: 0;
+            font-family: "Oswald", "Inter", sans-serif; font-weight: 600; font-size: 74px; line-height: 1.02; letter-spacing: 1px; color: #fff; text-transform: uppercase; }
+
+  /* mini monitor do coração */
+  #hud { position: absolute; left: 70px; bottom: 150px; display: flex; align-items: center; gap: 26px; }
+  #hud svg { width: 150px; height: 135px; overflow: visible; }
+  #hud b { display: block; font-size: 84px; font-weight: 900; letter-spacing: -2px; font-variant-numeric: tabular-nums; color: var(--neon-nucleo); text-shadow: 0 0 18px rgba(var(--neon-rgb), .9); line-height: 1; }
+  #hud span { font-size: 26px; font-weight: 900; letter-spacing: 5px; color: #A9ADB3; }
+  #alerta { position: absolute; right: 70px; bottom: 175px; font-size: 64px; font-weight: 900; letter-spacing: -1px; color: var(--neon-nucleo); text-shadow: 0 0 6px rgba(var(--neon-rgb), .9), 0 0 18px rgba(var(--neon-rgb), .8), 0 0 42px rgba(var(--neon-rgb), .6); opacity: 0; }
+  #credito { position: absolute; right: 40px; bottom: 60px; font-size: 24px; font-weight: 500; color: rgba(255,255,255,.55); }
+  #nota { position: absolute; left: 40px; bottom: 60px; font-size: 24px; font-weight: 500; color: rgba(255,255,255,.4); }
+</style>
+</head>
+<body>
+<div id="palco">
+  <div class="sombra-topo"></div>
+  <div class="sombra-base"></div>
+  <div id="progresso"><i></i></div>
+  <p id="chamada">COMO ACONTECE UM INFARTO</p>
+
+  <div class="etapa"><span class="num">1</span><h2>A placa de gordura<br>se rompe</h2><p>o sangue começa a coagular</p></div>
+  <div class="etapa"><span class="num">2</span><h2>O coágulo<br>cresce</h2><p>trombo oclusivo</p></div>
+  <div class="etapa"><span class="num">3</span><h2>A artéria<br>entope</h2><p>oclusão total: o sangue para de passar</p></div>
+  <div class="etapa"><span class="num">4</span><h2>O músculo do<br>coração morre</h2><p>isquemia miocárdica = infarto</p></div>
+
+  <div class="rotulo" id="r-oclusao">Oclusão<br>total</div>
+  <div class="rotulo" id="r-isquemia">Isquemia<br>miocárdica</div>
+
+  <div id="hud">
+    <svg viewBox="0 0 400 360" aria-hidden="true">
+      <g id="mini">
+        <path d="M200 340 C 60 240 0 160 30 90 C 60 20 160 10 200 80 C 240 10 340 20 370 90 C 400 160 340 240 200 340 Z"
+          fill="rgba(255,42,79,.3)" stroke="#FFE3E8" stroke-width="16" stroke-linejoin="round"
+          style="filter: drop-shadow(0 0 10px #FF2A4F) drop-shadow(0 0 30px #FF2A4F)"/>
+      </g>
+    </svg>
+    <div><b id="bpm">118</b><span>BPM</span></div>
+  </div>
+  <p id="alerta">INFARTO</p>
+  <p id="nota">Animação 3D ilustrativa</p>
+  <p id="credito">Animação 3D: G2 Medic</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const DURACAO = 14.25;
+  // cortes do vídeo 3D (segundos)
+  const CORTES = [0, 4.92, 7.42, 12.58, DURACAO];
+
+  // batimentos: 118 → 165 bpm, cada vez mais irregulares
+  let semente = 9;
+  const rnd = () => (semente = (semente * 16807) % 2147483647) / 2147483647;
+  const BATIDAS = [];
+  for (let t = .1; t < DURACAO - .05;) {
+    BATIDAS.push(+t.toFixed(4));
+    const k = t / DURACAO;
+    t += 60 / (118 + 47 * k) * (1 + (.3 + .4 * k) * (rnd() - .5));
+  }
+  window.BATIDAS = BATIDAS;
+  window.CORTES = CORTES;
+  function pulso(t) {
+    let v = 0;
+    for (let i = BATIDAS.length - 1; i >= 0; i--) {
+      const dt = t - BATIDAS[i];
+      if (dt < 0) continue;
+      if (dt > .5) break;
+      v += Math.exp(-dt * 14) + .5 * (dt > .12 ? Math.exp(-(dt - .12) * 16) : 0);
+    }
+    return Math.min(1.3, v);
+  }
+
+  // posição dos rótulos originais (pixels do vídeo 720x1280, multiplicados por 1,5)
+  const posOclusao = t => [(107 - 23.3 * (t - 8.2)) * 1.5 - 18, (349 - 46.2 * (t - 8.2)) * 1.5 - 14];
+  const posIsquemia = t => [(449 - 18 * (t - 12.9)) * 1.5 - 18, (318 + 6 * (t - 12.9)) * 1.5 - 14];
+  const rOc = document.getElementById("r-oclusao"), rIs = document.getElementById("r-isquemia");
+
+  function atualizar(t) {
+    const [ox, oy] = posOclusao(t); rOc.style.left = ox + "px"; rOc.style.top = oy + "px";
+    const [ix, iy] = posIsquemia(t); rIs.style.left = ix + "px"; rIs.style.top = iy + "px";
+    document.getElementById("mini").setAttribute("transform", `translate(200 190) scale(${(1 + .14 * pulso(t)).toFixed(3)}) translate(-200 -190)`);
+    const k = t / DURACAO;
+    document.getElementById("bpm").textContent = Math.round(118 + 47 * k);
+  }
+
+  const tl = gsap.timeline({ paused: true, onUpdate: () => atualizar(tl.time()) });
+  tl.to("#progresso i", { scaleX: 1, duration: DURACAO, ease: "none" }, 0);
+  document.querySelectorAll(".etapa").forEach((e, i) => {
+    tl.fromTo(e, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .35, ease: "power3.out" }, CORTES[i] + .05)
+      .fromTo(e.querySelector(".num"), { scale: 0 }, { scale: 1, duration: .35, ease: "back.out(2.5)" }, CORTES[i] + .05);
+    if (i < 3) tl.to(e, { opacity: 0, y: -20, duration: .2, ease: "power2.in" }, CORTES[i + 1] - .22);
+  });
+  // rótulos traduzidos acompanham o aparecimento dos originais
+  tl.fromTo(rOc, { opacity: 0 }, { opacity: 1, duration: .25 }, 8.15).set(rOc, { opacity: 0 }, 12.58)
+    .fromTo(rIs, { opacity: 0 }, { opacity: 1, duration: .25 }, 12.8);
+  // alerta de infarto pisca na etapa 4
+  [[0, 1], [.06, .15], [.1, 1], [.18, .3], [.24, 1], [.4, .6], [.45, 1]].forEach(([dt, o]) => tl.set("#alerta", { opacity: o }, 12.7 + dt));
+  tl.to({}, { duration: .01 }, DURACAO - .01);
+
+  atualizar(0);
+  window.tl = tl;
+  window.DURACAO = DURACAO;
+  if (!new URLSearchParams(location.search).has("render")) { tl.repeat(-1); tl.play(); }
+</script>
+</body>
+</html>
