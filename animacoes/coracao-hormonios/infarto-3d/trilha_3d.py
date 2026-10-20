@@ -40,8 +40,8 @@ tensao = sum(np.sin(2 * np.pi * f * (1 + .008 * prog * np.sin(2 * np.pi * .6 * t
 riser = np.sin(2 * np.pi * np.cumsum(220 + 600 * prog ** 2) / SR)
 mix += (tensao * .05 + riser * .03) * (.4 + .6 * prog)
 
-# impacto a cada etapa, mais forte na oclusão e na isquemia
-for corte, vol in zip(CORTES[1:4], (.5, .7, .95)):
+# impacto a cada etapa (coincide com o mergulho do gráfico para o 3D), mais forte na oclusão e na isquemia
+for corte, vol in zip(CORTES[0:4], (.45, .55, .7, .95)):
     mix += som(40, corte, 1.4, 2.8, vol) + som(80, corte, .4, 8, vol * .4)
 
 # alarme hospitalar a partir da isquemia (continua no trecho seguinte)
