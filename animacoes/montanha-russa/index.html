@@ -44,9 +44,14 @@
   .titulo { margin-top: 14px; white-space: nowrap; font-size: 84px; font-weight: 900; line-height: 1.04; letter-spacing: -2px; }
   .titulo .w { display: inline-block; opacity: 0; }
   .sub { margin-top: 26px; font-size: 40px; font-weight: 500; line-height: 1.3; color: var(--texto-suave); opacity: 0; }
-  .legenda { margin-top: 30px; display: flex; gap: 34px; font-size: 28px; font-weight: 700; letter-spacing: 2px; color: var(--texto-suave); }
-  .legenda span { display: flex; align-items: center; gap: 12px; opacity: 0; }
+  .legenda { margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 34px; row-gap: 12px; font-size: 28px; font-weight: 700; letter-spacing: 2px; color: var(--texto-suave); }
+  .legenda span { display: flex; align-items: center; gap: 14px; opacity: 0; }
   .legenda b { display: block; width: 34px; height: 6px; border-radius: 3px; }
+  /* Estradiol e progesterona em destaque; LH e FSH como coadjuvantes */
+  .legenda .forte { font-size: 44px; font-weight: 900; letter-spacing: 1px; color: var(--texto); }
+  .legenda .forte b { width: 54px; height: 12px; border-radius: 6px; }
+  .legenda .fraco { font-size: 28px; color: #7C818A; }
+  .pico { font-size: 34px; font-weight: 900; letter-spacing: 1px; }
   .grafico { width: 1080px; height: 760px; margin: 10px -90px 0; overflow: visible; }
   .dia { margin-top: 10px; font-size: 170px; font-weight: 900; letter-spacing: -4px; font-variant-numeric: tabular-nums; opacity: 0; }
 
@@ -61,6 +66,16 @@
   .carrinho .traco { fill: none; stroke: var(--neon-traco); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
   .carrinho .caixa { fill: var(--fundo); stroke: var(--neon-traco); stroke-width: 7; stroke-linejoin: round; }
   .carrinho { filter: drop-shadow(0 0 6px rgba(var(--neon-rgb), .9)) drop-shadow(0 0 18px rgba(var(--neon-rgb), .6)); }
+  .carrinho .olho { fill: var(--neon-nucleo); }
+  .carrinho .rosto { fill: none; stroke: var(--neon-nucleo); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+  .carrinho .gota, .carrinho .coracao { fill: #7FD6FF; }
+  .carrinho .coracao { fill: var(--neon); }
+  .carrinho .vapor { fill: none; stroke: #C9CDD3; stroke-width: 4; stroke-linecap: round; }
+  .carrinho .nota-mus { font: 900 30px "Inter", sans-serif; fill: var(--ciano); }
+  .carrinho.masc { filter: drop-shadow(0 0 6px rgba(47,211,255,.9)) drop-shadow(0 0 18px rgba(47,211,255,.5)); }
+  .carrinho.masc .traco, .carrinho.masc .caixa { stroke: #8BE6FF; }
+  .carrinho.masc .olho { fill: #E6FAFF; }
+  .carrinho.masc .rosto { stroke: #E6FAFF; }
 
   /* Cena final */
   #c4 { justify-content: center; padding-top: 0; }
@@ -80,7 +95,8 @@
     <!-- Cena 1: masculino -->
     <div class="cena" id="c1">
       <p class="titulo"><span class="w">O</span> <span class="w">CICLO</span> <span class="w">HORMONAL</span><br><span class="w" style="color:var(--ciano);text-shadow:0 0 30px rgba(47,211,255,.6)">MASCULINO</span></p>
-      <p class="sub">Testosterona: sobe e desce todo dia,<br>sempre no mesmo ritmo.</p>
+      <div class="legenda"><span class="forte"><b style="background:var(--ciano);box-shadow:0 0 16px var(--ciano)"></b>TESTOSTERONA</span></div>
+      <p class="sub">Sobe e desce todo dia,<br>sempre no mesmo ritmo.</p>
       <svg class="grafico" id="g1" viewBox="0 0 1080 760"></svg>
       <p class="dia" id="dia1">DIA 1</p>
     </div>
@@ -90,10 +106,10 @@
       <p class="chamada neon">A verdadeira montanha-russa</p>
       <p class="titulo"><span class="w">O</span> <span class="w">CICLO</span> <span class="w">HORMONAL</span><br><span class="w neon">FEMININO</span></p>
       <div class="legenda">
-        <span><b style="background:var(--neon)"></b>ESTROGÊNIO</span>
-        <span><b style="background:var(--branco)"></b>PROGESTERONA</span>
-        <span><b style="background:var(--amarelo)"></b>LH</span>
-        <span><b style="background:var(--cinza)"></b>FSH</span>
+        <span class="forte"><b style="background:var(--neon);box-shadow:0 0 16px var(--neon)"></b>ESTRADIOL</span>
+        <span class="forte"><b style="background:var(--branco);box-shadow:0 0 16px var(--branco)"></b>PROGESTERONA</span>
+        <span class="fraco"><b style="background:var(--amarelo)"></b>LH</span>
+        <span class="fraco"><b style="background:var(--cinza)"></b>FSH</span>
       </div>
       <svg class="grafico" id="g2" viewBox="0 0 1080 760"></svg>
       <p class="dia" id="dia2">DIA 1</p>
@@ -104,10 +120,10 @@
       <p class="chamada neon">E quando tudo sai do roteiro?</p>
       <p class="titulo"><span class="w">E</span> <span class="w">NA</span><br><span class="w neon">PERIMENOPAUSA…</span></p>
       <div class="legenda">
-        <span><b style="background:var(--neon)"></b>ESTROGÊNIO</span>
-        <span><b style="background:var(--branco)"></b>PROGESTERONA</span>
-        <span><b style="background:var(--amarelo)"></b>LH</span>
-        <span><b style="background:var(--cinza)"></b>FSH</span>
+        <span class="forte"><b style="background:var(--neon);box-shadow:0 0 16px var(--neon)"></b>ESTRADIOL</span>
+        <span class="forte"><b style="background:var(--branco);box-shadow:0 0 16px var(--branco)"></b>PROGESTERONA</span>
+        <span class="fraco"><b style="background:var(--amarelo)"></b>LH</span>
+        <span class="fraco"><b style="background:var(--cinza)"></b>FSH</span>
       </div>
       <svg class="grafico" id="g3" viewBox="0 0 1080 760"></svg>
       <p class="dia" id="dia3">DIA 1</p>
@@ -181,16 +197,28 @@
     const curvas = cfg.curvas.map(c => {
       let d = "";
       for (let s = 0; s <= D; s += D / 900) d += (d ? " L" : "M") + xd(s).toFixed(1) + " " + yv(c.f(s)).toFixed(1);
-      const glow = el("path", { d, class: "curva", stroke: cores[c.k], "stroke-width": 16, opacity: .18 }, grupo);
-      el("path", { d, class: "curva", stroke: cores[c.k], style: `filter: drop-shadow(0 0 8px ${cores[c.k]})` }, grupo);
-      const ponto = el("circle", { r: 11, fill: cores[c.k], style: `filter: drop-shadow(0 0 10px ${cores[c.k]})` }, svg);
+      // estradiol, progesterona e testosterona em destaque; LH e FSH mais finos e apagados
+      const forte = c.k === "E" || c.k === "P" || c.k === "T";
+      el("path", { d, class: "curva", stroke: cores[c.k], "stroke-width": forte ? 30 : 12, opacity: forte ? .22 : .1 }, grupo);
+      el("path", { d, class: "curva", stroke: cores[c.k], "stroke-width": forte ? 11 : 5, opacity: forte ? 1 : .6,
+        style: `filter: drop-shadow(0 0 ${forte ? 14 : 6}px ${cores[c.k]})` }, grupo);
+      const ponto = el("circle", { r: forte ? 15 : 9, fill: cores[c.k], opacity: 0, style: `filter: drop-shadow(0 0 12px ${cores[c.k]})` }, svg);
       return { ...c, ponto };
     });
+    // chamadas de pico (aparecem quando a linha passa por elas)
+    const picos = (cfg.picos || []).map(pk => {
+      const curva = cfg.curvas.find(c => c.k === pk.k);
+      const y = pk.y != null ? pk.y : yv(curva.f(pk.d)) - 34;
+      const t = el("text", { x: xd(pk.d) + (pk.dx || 0), y, "text-anchor": pk.ancora || "middle", class: "pico", fill: cores[pk.k] === "#F2F2F2" ? "#FFFFFF" : "#FFE3E8",
+        style: `paint-order: stroke; stroke: ${cores[pk.k]}; stroke-width: 0; filter: drop-shadow(0 0 10px ${cores[pk.k]}) drop-shadow(0 0 22px ${cores[pk.k]})`, opacity: 0 }, svg);
+      t.textContent = pk.txt;
+      return { ...pk, t };
+    });
     let carro = null;
-    if (OPCAO === 2) carro = criarCarrinho(svg);
+    if (OPCAO === 2) carro = criarCarrinho(svg, cfg.genero);
     return {
-      D, xd, yv,
-      set(p, extra = {}) {
+      D, xd, yv, picos,
+      set(p, tempo) {
         const dia = p * D;
         ret.setAttribute("width", xd(dia) + 4);
         curvas.forEach(c => {
@@ -202,33 +230,99 @@
           const h = D * .012;
           const ya = yv(f(Math.max(0, dia - h))), yb = yv(f(Math.min(D, dia + h)));
           let ang = Math.atan2(yb - ya, xd(Math.min(D, dia + h)) - xd(Math.max(0, dia - h))) * 180 / Math.PI;
-          ang = Math.max(-48, Math.min(48, ang));
-          carro.set(xd(dia), yv(f(dia)), ang, extra.panico || ang < -18, p > 0.001);
+          ang = Math.max(-45, Math.min(45, ang));
+          carro.set(xd(dia), yv(f(dia)), ang, cfg.humor(dia, p), tempo, p > 0.001);
         }
         return dia;
       }
     };
   }
 
-  // ---------- Bonequinha no carrinho (opção 2) ----------
-  function criarCarrinho(svg) {
-    const raiz = el("g", { class: "carrinho" }, svg);
-    const corpo = el("g", {}, raiz);
-    // bonequinha sentada
-    el("circle", { class: "traco", cx: 0, cy: -96, r: 17 }, corpo);
-    el("path", { class: "traco", d: "M0 -79 V -38" }, corpo);
-    const bE = el("path", { class: "traco", d: "M0 -68 L -26 -46" }, corpo);
-    const bD = el("path", { class: "traco", d: "M0 -68 L 26 -46" }, corpo);
-    // carrinho
+  // ---------- Bonequinho(a) no carrinho, com rosto e emoções (opção 2) ----------
+  // Humores: feliz (homem), colica, ansiosa, intensa, brava, panico, grito
+  const ROSTOS = {
+    feliz:   { boca: "M-9 -96 Q 0 -86 9 -96", sob: "", olhos: 2.8 },
+    colica:  { boca: "M-8 -89 Q 0 -97 8 -89", sob: "M-12 -110 L -4 -114 M 12 -110 L 4 -114", olhos: 2.6 },
+    ansiosa: { boca: "M-10 -92 q 2.5 -4 5 0 t 5 0 t 5 0 t 5 0", sob: "M-12 -115 L -3 -116 M 12 -115 L 3 -116", olhos: 3.2 },
+    intensa: { boca: "M-7 -93 a7 8 0 1 0 14 0 a7 8 0 1 0 -14 0", sob: "M-12 -117 Q -7 -121 -2 -117 M 12 -117 Q 7 -121 2 -117", olhos: 3.6 },
+    brava:   { boca: "M-9 -92 l3 3 l3 -3 l3 3 l3 -3 l3 3", sob: "M-13 -116 L -3 -110 M 13 -116 L 3 -110", olhos: 2.6 },
+    panico:  { boca: "M-8 -93 a8 10 0 1 0 16 0 a8 10 0 1 0 -16 0", sob: "M-13 -119 Q -8 -124 -2 -119 M 13 -119 Q 8 -124 2 -119", olhos: 4.4 },
+    grito:   { boca: "M-11 -94 a11 14 0 1 0 22 0 a11 14 0 1 0 -22 0", sob: "M-14 -120 Q -8 -126 -2 -120 M 14 -120 Q 8 -126 2 -120", olhos: 5 }
+  };
+  const BRACOS = {
+    relax:  ["M0 -68 L -24 -50", "M0 -68 L 30 -96 L 22 -110"],          // homem: tchauzinho tranquilo
+    barriga:["M0 -68 L -14 -54 L 4 -50", "M0 -68 L 26 -46"],             // mão na barriga (cólica)
+    segura: ["M0 -68 L -30 -52", "M0 -68 L 30 -52"],                     // segurando firme
+    cima:   ["M0 -68 L -22 -114", "M0 -68 L 22 -114"],                   // braços para cima
+    punho:  ["M0 -68 L -26 -58 L -20 -76", "M0 -68 L 26 -58 L 20 -76"],  // punhos cerrados (raiva)
+    cabeca: ["M0 -68 L -30 -88 L -16 -112", "M0 -68 L 30 -88 L 16 -112"] // mãos na cabeça (pânico)
+  };
+  function criarCarrinho(svg, genero) {
+    const masc = genero === "m";
+    const raiz = el("g", { class: "carrinho" + (masc ? " masc" : "") }, svg);
+    const escala = el("g", { transform: "scale(1.35)" }, raiz);
+    const corpo = el("g", {}, escala);
+    // cabelo: rabo de cavalo (ela) / topete (ele)
+    el("path", { class: "traco", d: masc ? "M-14 -116 q 8 -10 26 -4" : "M-18 -108 Q -16 -126 0 -126 Q 18 -126 20 -106 M 18 -114 q 18 2 20 24" }, corpo);
+    el("circle", { class: "traco", cx: 0, cy: -100, r: 20 }, corpo);
+    const olhoE = el("circle", { class: "olho", cx: -7, cy: -103, r: 2.8 }, corpo);
+    const olhoD = el("circle", { class: "olho", cx: 7, cy: -103, r: 2.8 }, corpo);
+    const sob = el("path", { class: "rosto", d: "" }, corpo);
+    const boca = el("path", { class: "rosto", d: "" }, corpo);
+    el("path", { class: "traco", d: "M0 -80 V -40" }, corpo);
+    const bE = el("path", { class: "traco", d: "" }, corpo);
+    const bD = el("path", { class: "traco", d: "" }, corpo);
     el("path", { class: "caixa", d: "M-46 -50 H 46 L 38 -12 H -38 Z" }, corpo);
     el("circle", { class: "caixa", cx: -24, cy: -6, r: 8 }, corpo);
     el("circle", { class: "caixa", cx: 24, cy: -6, r: 8 }, corpo);
+    // extras de emoção
+    const gotas = masc ? [] : [0, 1, 2, 3].map(() => el("path", { class: "gota", d: "M0 -7 C 3 -2 5 1 5 3 A 5 5 0 0 1 -5 3 C -5 1 -3 -2 0 -7 Z" }, corpo));
+    const lagrima = el("path", { class: "gota", d: "M0 -5 C 2 -1 4 1 4 3 A 4 4 0 0 1 -4 3 C -4 1 -2 -1 0 -5 Z", opacity: 0 }, corpo);
+    const coracoes = [0, 1].map(() => el("path", { class: "coracao", d: "M0 6 C -11 -2 -11 -11 -5 -13 C -2 -14 0 -11 0 -9 C 0 -11 2 -14 5 -13 C 11 -11 11 -2 0 6 Z", opacity: 0 }, corpo));
+    const vapor = [0, 1].map(() => el("path", { class: "vapor", d: "M0 0 q -6 -6 0 -12 q 6 -6 0 -12", opacity: 0 }, corpo));
+    const notas = masc ? [0, 1].map(i => { const n = el("text", { class: "nota-mus", opacity: 0 }, corpo); n.textContent = i ? "♫" : "♪"; return n; }) : [];
+
     return {
-      set(x, y, ang, bracosParaCima, visivel) {
-        raiz.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+      set(x, y, ang, humor, t, visivel) {
+        const tremeAmp = { brava: 2.5, panico: 4, grito: 6, intensa: 1.2 }[humor] || 0;
+        const jx = tremeAmp * Math.sin(t * 71), jy = tremeAmp * Math.cos(t * 53);
+        raiz.setAttribute("transform", `translate(${(x + jx).toFixed(1)} ${(y + jy).toFixed(1)}) rotate(${ang.toFixed(1)})`);
         raiz.setAttribute("opacity", visivel ? 1 : 0);
-        bE.setAttribute("d", bracosParaCima ? "M0 -68 L -22 -112" : "M0 -68 L -26 -46");
-        bD.setAttribute("d", bracosParaCima ? "M0 -68 L 22 -112" : "M0 -68 L 26 -46");
+        const r = ROSTOS[humor];
+        boca.setAttribute("d", r.boca); sob.setAttribute("d", r.sob);
+        olhoE.setAttribute("r", r.olhos); olhoD.setAttribute("r", r.olhos);
+        const br = BRACOS[{ feliz: "relax", colica: "barriga", ansiosa: "segura", intensa: "cima", brava: "punho", panico: "cabeca", grito: "cima" }[humor]];
+        bE.setAttribute("d", br[0]); bD.setAttribute("d", br[1]);
+        // suor sempre (ela): mais rápido quanto pior o humor
+        const ritmo = { colica: 1.2, ansiosa: 1.6, intensa: 1.8, brava: 2, panico: 2.8, grito: 3.2 }[humor] || 1.2;
+        gotas.forEach((gg, i) => {
+          const lado = i % 2 ? 1 : -1;
+          const fase = (t * ritmo + i / 4) % 1;
+          gg.setAttribute("transform", `translate(${(lado * (24 + 16 * fase)).toFixed(1)} ${(-112 + 46 * fase * fase).toFixed(1)})`);
+          gg.setAttribute("opacity", (1 - fase).toFixed(2));
+        });
+        // lágrima na cólica
+        const fl = (t * 1.1) % 1;
+        lagrima.setAttribute("transform", `translate(-9 ${(-96 + 26 * fl).toFixed(1)})`);
+        lagrima.setAttribute("opacity", humor === "colica" ? (1 - fl).toFixed(2) : 0);
+        // corações na ovulação
+        coracoes.forEach((c, i) => {
+          const f = (t * .9 + i / 2) % 1;
+          c.setAttribute("transform", `translate(${i ? 30 : -32} ${(-118 - 50 * f).toFixed(1)}) scale(${(.8 + .4 * f).toFixed(2)})`);
+          c.setAttribute("opacity", humor === "intensa" ? (1 - f).toFixed(2) : 0);
+        });
+        // vapor de raiva na TPM
+        vapor.forEach((v, i) => {
+          const f = (t * 1.4 + i / 2) % 1;
+          v.setAttribute("transform", `translate(${i ? 14 : -14} ${(-124 - 30 * f).toFixed(1)})`);
+          v.setAttribute("opacity", humor === "brava" ? (1 - f).toFixed(2) : 0);
+        });
+        // ele: assobiando, notinhas subindo
+        notas.forEach((n, i) => {
+          const f = (t * .7 + i / 2) % 1;
+          n.setAttribute("x", 26 + 14 * f); n.setAttribute("y", (-118 - 50 * f).toFixed(1));
+          n.setAttribute("opacity", (1 - f).toFixed(2));
+        });
       }
     };
   }
@@ -238,7 +332,9 @@
     dias: 28,
     marcas: [[0, "DIA 1"], [7, "DIA 7"], [14, "DIA 14"], [21, "DIA 21"], [28, "DIA 28"]],
     curvas: [{ k: "T", f: d => .55 + .3 * Math.sin(2 * Math.PI * d - Math.PI / 2) }],
-    trilho: d => .55 + .04 * Math.sin(2 * Math.PI * d)
+    trilho: d => .55 + .04 * Math.sin(2 * Math.PI * d),
+    genero: "m",
+    humor: () => "feliz"
   });
 
   const fE = d => .1 + g(d, 12.8, 2.4, .78) + g(d, 21, 2.8, .32);
@@ -262,7 +358,13 @@
       { k: "LH", f: d => .06 + g(d, 13.9, .6, .86) },
       { k: "E", f: fE }
     ],
-    trilho: fE
+    picos: [
+      { k: "E", d: 12.8, txt: "PICO DE ESTRADIOL", y: 172, dx: -40, ancora: "end" },
+      { k: "P", d: 21.5, txt: "PICO DE PROGESTERONA", y: 150 }
+    ],
+    trilho: fE,
+    // a bonequinha muda de humor conforme a fase do ciclo
+    humor: d => d < 5 ? "colica" : d < 11 ? "ansiosa" : d < 16 ? "intensa" : "brava"
   });
 
   const fEp = d => .1 + g(d, 5, 1.3, .55) + g(d, 9, 1.4, .82) + g(d, 23, 2, .92) + g(d, 30, 1.5, .55) + g(d, 38.5, 2, .96) + g(d, 46, 1.7, .7);
@@ -281,7 +383,12 @@
       { k: "LH", f: d => .05 + g(d, 10, .55, .86) + g(d, 31, .7, .3) + g(d, 44, .6, .22) },
       { k: "E", f: fEp }
     ],
-    trilho: fEp
+    picos: [
+      { k: "E", d: 38.5, txt: "ESTRADIOL DESCONTROLADO", y: 150, dx: 0, ancora: "middle" },
+      { k: "P", d: 17, txt: "PROGESTERONA EM QUEDA", y: 560, ancora: "start" }
+    ],
+    trilho: fEp,
+    humor: (d, p) => p >= 1 ? "grito" : "panico"
   });
 
   // ---------- Brasas (fundo) ----------
@@ -309,11 +416,11 @@
   const falhas = [[.42, .5, "DIA 50"], [.56, .62, "DIA 14"], [.7, .75, "DIA 9"]];
   function atualizar(t) {
     desenharBrasas(t);
-    const d1 = masc.set(estado.p1);
+    const d1 = masc.set(estado.p1, t);
     document.getElementById("dia1").textContent = "DIA " + Math.max(1, Math.ceil(d1));
-    const d2 = fem.set(estado.p2);
+    const d2 = fem.set(estado.p2, t);
     document.getElementById("dia2").textContent = "DIA " + Math.max(1, Math.ceil(d2));
-    const d3 = peri.set(estado.p3, { panico: estado.p3 > .3 });
+    const d3 = peri.set(estado.p3, t);
     const falha = falhas.find(([a, b]) => estado.p3 >= a && estado.p3 < b);
     document.getElementById("dia3").textContent = estado.p3 >= 1 ? "DIA 52?" : falha ? falha[2] : "DIA " + Math.max(1, Math.ceil(d3));
   }
@@ -338,6 +445,7 @@
 
   // Cena 1 — masculino: estável e previsível
   entrarTitulo("#c1", .05);
+  tl.fromTo("#c1 .legenda span", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .3, ease: "power2.out" }, .4);
   tl.fromTo("#c1 .sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .4, ease: "power2.out" }, .45)
     .to("#dia1", { opacity: 1, duration: .3 }, .8)
     .to(estado, { p1: 1, duration: 2.8, ease: "power1.inOut" }, .85)
@@ -372,6 +480,11 @@
     .to(estado, { calor: .3, duration: .8, ease: "power2.inOut" }, 16.9)
     .to("#c3", { opacity: 0, scale: .92, filter: "blur(12px)", duration: .35, ease: "power2.in" }, 17.3);
   tremor(16.4, 22);
+
+  // Chamadas de pico: surgem com salto quando a linha chega nelas
+  [[fem, 5.4, 5], [peri, 12.2, 4.2]].forEach(([gr, inicio, dur]) => gr.picos.forEach(pk => {
+    tl.fromTo(pk.t, { opacity: 0, scale: .5, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, inicio + dur * pk.d / gr.D);
+  }));
 
   // Cena 4 — fechamento
   piscar("#final1", 17.75);
