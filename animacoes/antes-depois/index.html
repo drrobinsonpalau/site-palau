@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antes e Depois</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon: #FF2A4F; --neon-rgb: 255, 42, 79; --neon-nucleo: #FFE3E8;
+    --peso: #2FD3FF; --gordura: #FF2A4F; --musculo: #D4FF3A; --pgc: #FFB020;
+    --fundo: #0A0B0D; --texto: #FFFFFF; --texto-suave: #A9ADB3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; overflow: hidden; }
+  body { display: grid; place-items: center; font-family: "Inter", system-ui, sans-serif; }
+  #palco { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--fundo); color: var(--texto); transform-origin: center center; }
+  #vinheta { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, transparent 50%, rgba(0,0,0,.7) 100%); }
+  #progresso { position: absolute; top: 0; left: 0; height: 10px; width: 100%; background: rgba(255,255,255,.1); z-index: 5; }
+  #progresso i { display: block; height: 100%; width: 100%; background: var(--neon); box-shadow: 0 0 18px var(--neon); transform-origin: left; transform: scaleX(0); }
+  .neon { color: var(--neon-nucleo); text-shadow: 0 0 6px rgba(var(--neon-rgb), .9), 0 0 18px rgba(var(--neon-rgb), .8), 0 0 42px rgba(var(--neon-rgb), .6); }
+
+  #chamada { position: absolute; top: 90px; left: 0; right: 0; text-align: center; font-size: 36px; font-weight: 900; letter-spacing: 8px; opacity: 0; }
+  #titulo { position: absolute; top: 148px; left: 0; right: 0; text-align: center; font-size: 66px; font-weight: 900; letter-spacing: -2px; }
+  #titulo .w { display: inline-block; opacity: 0; }
+
+  /* fotos: antes à esquerda, depois à direita */
+  .foto { position: absolute; top: 270px; width: 470px; height: 610px; border-radius: 26px; overflow: hidden; border: 5px solid; }
+  .foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #f-antes { left: 55px; border-color: #FF6F88; box-shadow: 0 0 30px rgba(var(--neon-rgb), .6); opacity: 0; }
+  #f-depois { left: 555px; border-color: var(--musculo); box-shadow: 0 0 30px rgba(212,255,58,.55); }
+  #f-depois img { clip-path: inset(0 0 0 100%); }
+  #misterio { position: absolute; inset: 0; display: grid; place-items: center; background: repeating-linear-gradient(135deg, #111317 0 22px, #15181D 22px 44px); font-size: 220px; font-weight: 900; color: rgba(212,255,58,.85); text-shadow: 0 0 30px rgba(212,255,58,.7); opacity: 0; }
+  .selo { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); white-space: nowrap; padding: 10px 22px; border-radius: 30px; background: rgba(10,11,13,.85); font-size: 30px; font-weight: 900; letter-spacing: 3px; }
+  #f-antes .selo { color: #FF8FA3; }
+  #f-depois .selo { color: var(--musculo); }
+
+  #grafico { position: absolute; top: 905px; left: 0; width: 1080px; height: 640px; overflow: visible; }
+  #grafico text { font-family: "Inter", sans-serif; }
+  .eixo-txt { font-size: 24px; font-weight: 700; fill: var(--texto-suave); }
+  .nome { font-size: 29px; font-weight: 900; }
+  #data { font-size: 52px; font-weight: 900; letter-spacing: -1px; font-variant-numeric: tabular-nums; fill: #FFFFFF; }
+
+  /* cartões de resultado */
+  #cartoes { position: absolute; top: 1555px; left: 40px; right: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .cartao { border-radius: 22px; padding: 18px 10px 16px; text-align: center; background: rgba(255,255,255,.04); border: 3px solid; opacity: 0; }
+  .cartao small { display: block; font-size: 23px; font-weight: 900; letter-spacing: 1px; line-height: 1.15; }
+  .cartao b { display: block; margin-top: 10px; font-size: 50px; font-weight: 900; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+  .cartao span { display: block; margin-top: 6px; font-size: 22px; font-weight: 700; color: var(--texto-suave); }
+  #nota { position: absolute; left: 50px; right: 50px; bottom: 60px; text-align: center; font-size: 22px; font-weight: 500; line-height: 1.35; color: #6B7078; }
+</style>
+</head>
+<body>
+<div id="palco">
+  <p id="chamada" class="neon">ANTES E DEPOIS</p>
+  <h1 id="titulo"><span class="w">16</span> <span class="w">meses</span> <span class="w">de</span> <span class="w">acompanhamento</span></h1>
+
+  <div class="foto" id="f-antes"><img src="fotos/antes.jpg" alt=""><p class="selo">ANTES · JUN/25</p></div>
+  <div class="foto" id="f-depois"><div id="misterio">?</div><img src="fotos/depois.jpg" alt="" style="object-position: 50% 30%"><p class="selo" id="selo-depois" style="opacity:0">DEPOIS · OUT/26</p></div>
+
+  <svg id="grafico" viewBox="0 0 1080 640"></svg>
+
+  <div id="cartoes">
+    <div class="cartao" style="border-color:var(--peso)"><small style="color:var(--peso)">PESO</small><b id="c-peso">0</b><span>81,8 → 55,0 kg</span></div>
+    <div class="cartao" style="border-color:var(--gordura)"><small style="color:#FF6F88">MASSA DE<br>GORDURA</small><b id="c-gord">0</b><span>34,1 → 18,7 kg</span></div>
+    <div class="cartao" style="border-color:var(--pgc)"><small style="color:var(--pgc)">% DE<br>GORDURA</small><b id="c-pgc">0</b><span>41,7 → 34,0 %</span></div>
+    <div class="cartao" style="border-color:var(--musculo)"><small style="color:var(--musculo)">MASSA<br>MUSCULAR</small><b id="c-musc">0</b><span>22,2 → 19,5 kg</span></div>
+  </div>
+  <p id="nota">Jun/25: bioimpedância Anovator. Abr a out/26: InBody 120. Aparelhos diferentes; comparação aproximada.<br>Resultados individuais variam. Imagens divulgadas com autorização da paciente.</p>
+
+  <div id="vinheta"></div>
+  <div id="progresso"><i></i></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const palco = document.getElementById("palco");
+  function ajustar() { palco.style.transform = `scale(${Math.min(innerWidth / 1080, innerHeight / 1920)})`; }
+  addEventListener("resize", ajustar); ajustar();
+  const render = new URLSearchParams(location.search).has("render");
+  const NS = "http://www.w3.org/2000/svg";
+
+  // ---------- Dados das bioimpedâncias ----------
+  // jun/25 (Anovator) + histórico do InBody; massa de gordura do histórico = peso × % de gordura
+  const DATAS = ["2025-06-13", "2026-04-29", "2026-05-14", "2026-05-26", "2026-05-28", "2026-07-08", "2026-08-19", "2026-09-23", "2026-10-14"];
+  const SERIES = {
+    peso:    { nome: "PESO",          un: "kg", eixo: "kg", cor: "#2FD3FF", v: [81.8, 61.4, 60.5, 60.8, 60.3, 59.5, 57.5, 57.1, 55.0] },
+    gordura: { nome: "GORDURA",       un: "kg", eixo: "kg", cor: "#FF2A4F", v: [34.1, 24.1, 24.0, 24.0, 24.0, 22.5, 20.8, 19.7, 18.7] },
+    musculo: { nome: "MÚSCULO",       un: "kg", eixo: "kg", cor: "#D4FF3A", v: [22.2, 20.1, 19.6, 19.8, 19.5, 19.9, 19.6, 20.1, 19.5] },
+    pgc:     { nome: "% GORDURA",     un: "%",  eixo: "%",  cor: "#FFB020", v: [41.7, 39.3, 39.7, 39.4, 39.8, 37.8, 36.2, 34.5, 34.0] }
+  };
+  const MESES = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
+  const dia = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / 864e5;
+  const D = DATAS.map(dia), D0 = D[0], D1 = D[D.length - 1];
+
+  // interpolação monotônica (não inventa picos entre as medidas)
+  function monotona(xs, ys) {
+    const n = xs.length, d = [], m = new Array(n);
+    for (let i = 0; i < n - 1; i++) d.push((ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]));
+    m[0] = d[0]; m[n - 1] = d[n - 2];
+    for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+    for (let i = 0; i < n - 1; i++) {
+      if (d[i] === 0) { m[i] = m[i + 1] = 0; continue; }
+      const a = m[i] / d[i], b = m[i + 1] / d[i], s = a * a + b * b;
+      if (s > 9) { const k = 3 / Math.sqrt(s); m[i] = k * a * d[i]; m[i + 1] = k * b * d[i]; }
+    }
+    return x => {
+      let i = 0; while (i < n - 2 && x > xs[i + 1]) i++;
+      const h = xs[i + 1] - xs[i], u = Math.min(1, Math.max(0, (x - xs[i]) / h));
+      const h00 = 2 * u ** 3 - 3 * u ** 2 + 1, h10 = u ** 3 - 2 * u ** 2 + u, h01 = -2 * u ** 3 + 3 * u ** 2, h11 = u ** 3 - u ** 2;
+      return h00 * ys[i] + h10 * h * m[i] + h01 * ys[i + 1] + h11 * h * m[i + 1];
+    };
+  }
+  for (const k in SERIES) SERIES[k].f = monotona(D, SERIES[k].v);
+
+  // ---------- Gráfico ----------
+  const X0 = 110, X1 = 740, YB = 520, YT = 90;   // à direita fica a faixa dos nomes
+  const xd = d => X0 + (d - D0) / (D1 - D0) * (X1 - X0);
+  const yKg = v => YB - (v - 10) / (90 - 10) * (YB - YT);       // eixo esquerdo: 10–90 kg
+  const yPc = v => YB - (v - 25) / (45 - 25) * (YB - YT);       // eixo direito: 25–45 %
+  const yS = (k, v) => SERIES[k].eixo === "%" ? yPc(v) : yKg(v);
+  const svg = document.getElementById("grafico");
+  function el(tag, a, pai) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); if (pai) pai.appendChild(e); return e; }
+  el("line", { x1: X0, y1: YB + 10, x2: X1, y2: YB + 10, stroke: "#3A3E45", "stroke-width": 3 }, svg);
+  for (const kg of [20, 40, 60, 80]) {
+    el("line", { x1: X0, y1: yKg(kg), x2: X1, y2: yKg(kg), stroke: "rgba(255,255,255,.06)", "stroke-width": 2 }, svg);
+    el("text", { x: X0 - 14, y: yKg(kg) + 8, "text-anchor": "end", class: "eixo-txt" }, svg).textContent = kg;
+  }
+  el("text", { x: X0 - 14, y: YT - 22, "text-anchor": "end", class: "eixo-txt" }, svg).textContent = "kg";
+  [["2025-06-13", "JUN/25"], ["2026-04-29", "ABR/26"], ["2026-10-14", "OUT/26"]].forEach(([s, txt]) => {
+    el("line", { x1: xd(dia(s)), y1: YB + 4, x2: xd(dia(s)), y2: YB + 18, stroke: "#3A3E45", "stroke-width": 3 }, svg);
+    el("text", { x: xd(dia(s)), y: YB + 54, "text-anchor": "middle", class: "eixo-txt" }, svg).textContent = txt;
+  });
+  const dataTxt = el("text", { id: "data", x: X0, y: 44 }, svg);
+  const defs = el("defs", {}, svg);
+  const recorte = el("rect", { x: 0, y: -100, width: 0, height: 900 }, el("clipPath", { id: "clip-g" }, defs));
+  const grupo = el("g", { "clip-path": "url(#clip-g)" }, svg);
+  const cabecas = {}, nomes = {}, marcadores = {};
+  for (const k of ["musculo", "gordura", "pgc", "peso"]) {
+    const s = SERIES[k];
+    let d = "";
+    for (let x = D0; x <= D1 + .01; x += 2) d += (d ? " L" : "M") + xd(x).toFixed(1) + " " + yS(k, s.f(x)).toFixed(1);
+    const tracejada = k === "pgc" ? { "stroke-dasharray": "20 14" } : {};
+    el("path", { d, fill: "none", stroke: s.cor, "stroke-width": 28, opacity: .18, "stroke-linecap": "round", ...tracejada }, grupo);
+    el("path", { d, fill: "none", stroke: s.cor, "stroke-width": 10, "stroke-linecap": "round", "stroke-linejoin": "round", style: `filter: drop-shadow(0 0 10px ${s.cor})`, ...tracejada }, grupo);
+    // bolinhas nas datas de cada medida
+    marcadores[k] = D.map((dd, i) => el("circle", { cx: xd(dd), cy: yS(k, s.v[i]), r: 0, fill: "#0A0B0D", stroke: s.cor, "stroke-width": 5 }, svg));
+    cabecas[k] = el("circle", { r: 15, fill: s.cor, opacity: 0, style: `filter: drop-shadow(0 0 12px ${s.cor})` }, svg);
+    nomes[k] = el("text", { class: "nome", fill: s.cor, opacity: 0, style: `filter: drop-shadow(0 0 10px ${s.cor})` }, svg);
+  }
+  // momento em que a gordura fica abaixo da massa muscular
+  let cruzamento = null;
+  for (let x = D0; x <= D1; x += .5) if (SERIES.gordura.f(x) < SERIES.musculo.f(x)) { cruzamento = x; break; }
+  const aviso = el("g", { opacity: 0 }, svg);
+  el("rect", { x: -250, y: -64, width: 500, height: 56, rx: 28, fill: "rgba(10,11,13,.9)", stroke: "#D4FF3A", "stroke-width": 3 }, aviso);
+  el("text", { x: 0, y: -26, "text-anchor": "middle", class: "nome", fill: "#D4FF3A" }, aviso).textContent = "GORDURA ABAIXO DO MÚSCULO";
+
+  const fmt = (v, un) => v.toFixed(1).replace(".", ",") + (un === "%" ? "%" : " kg");
+  const estado = { p: 0 };
+
+  function atualizar() {
+    const x = D0 + estado.p * (D1 - D0);
+    recorte.setAttribute("width", xd(x) + 6);
+    const dt = new Date(x * 864e5);
+    dataTxt.textContent = MESES[dt.getUTCMonth()] + "/" + String(dt.getUTCFullYear()).slice(2);
+    dataTxt.setAttribute("opacity", estado.p > 0 ? 1 : 0);
+    // posição dos nomes: acima de cada ponta, afastados entre si para não se cobrirem
+    const itens = Object.keys(SERIES).map(k => ({ k, y: yS(k, SERIES[k].f(x)) }));
+    const ordem = [...itens].sort((a, b) => a.y - b.y);
+    for (let i = 0; i < ordem.length; i++) {
+      ordem[i].ly = ordem[i].y + 10;
+      if (i && ordem[i].ly - ordem[i - 1].ly < 40) ordem[i].ly = ordem[i - 1].ly + 40;
+    }
+    for (const it of itens) {
+      const s = SERIES[it.k], v = s.f(x);
+      cabecas[it.k].setAttribute("cx", xd(x)); cabecas[it.k].setAttribute("cy", it.y);
+      cabecas[it.k].setAttribute("opacity", estado.p > 0 ? 1 : 0);
+      const n = nomes[it.k];
+      n.textContent = `${s.nome} ${fmt(v, s.un)}`;
+      n.setAttribute("x", (xd(x) + 26).toFixed(1));
+      n.setAttribute("y", it.ly.toFixed(1));
+      n.setAttribute("opacity", estado.p > 0 ? 1 : 0);
+      // marcador da medida acende quando a linha passa
+      marcadores[it.k].forEach((m, i) => {
+        const dd = x - D[i];
+        m.setAttribute("r", dd < 0 ? 0 : (9 + 5 * Math.exp(-dd / 6)).toFixed(1));
+      });
+    }
+    if (cruzamento) {
+      aviso.setAttribute("transform", `translate(${xd(cruzamento) - 230} ${yKg(SERIES.musculo.f(cruzamento)) - 70})`);
+    }
+  }
+
+  // ---------- Linha do tempo ----------
+  const DURACAO = 22;
+  const tl = gsap.timeline({ paused: true, onUpdate: atualizar });
+  function piscar(alvo, inicio) {
+    [[0, 1], [.06, .15], [.1, 1], [.18, .3], [.24, 1], [.4, .6], [.45, 1]].forEach(([dt, o]) => tl.set(alvo, { opacity: o }, inicio + dt));
+  }
+  tl.to("#progresso i", { scaleX: 1, duration: DURACAO, ease: "none" }, 0);
+  piscar("#chamada", .05);
+  tl.fromTo("#titulo .w", { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, stagger: .08, ease: "power2.out" }, .4)
+    // antes entra pela esquerda; o depois fica escondido
+    .fromTo("#f-antes", { opacity: 0, x: -120 }, { opacity: 1, x: 0, duration: .6, ease: "power3.out" }, .8)
+    .fromTo("#misterio", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .5, ease: "back.out(2)" }, 1.1)
+    .to("#misterio", { scale: 1.08, duration: .5, ease: "sine.inOut", yoyo: true, repeat: 9 }, 1.6)
+    // linha do tempo das medidas
+    .to(estado, { p: 1, duration: 10.5, ease: "power1.inOut" }, 2.4);
+  if (cruzamento) {
+    const tc = 2.4 + 10.5 * (cruzamento - D0) / (D1 - D0);
+    tl.fromTo(aviso, { opacity: 0 }, { opacity: 1, duration: .3 }, tc + .4)
+      .to(aviso, { opacity: 0, duration: .3 }, tc + 2.6);
+  }
+  // revelação do depois: cortina da esquerda para a direita + zoom de impacto
+  tl.to("#misterio", { opacity: 0, duration: .2 }, 13.2)
+    .fromTo("#f-depois img", { clipPath: "inset(0 0 0 100%)" }, { clipPath: "inset(0 0 0 0%)", duration: .6, ease: "power4.inOut" }, 13.2)
+    .to("#f-depois", { scale: 1.06, duration: .15, ease: "power2.out" }, 13.8)
+    .to("#f-depois", { scale: 1, duration: .3, ease: "power2.inOut" }, 13.95)
+    .fromTo("#selo-depois", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .3 }, 13.9);
+  // cartões com contagem
+  const cont = { peso: 0, gord: 0, pgc: 0, musc: 22.2 };
+  tl.fromTo(".cartao", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4, stagger: .12, ease: "back.out(1.6)" }, 14.6)
+    .to(cont, { peso: 26.8, gord: 15.4, pgc: 7.7, musc: 19.5, duration: 1.6, ease: "power1.out",
+      onUpdate: () => {
+        document.getElementById("c-peso").textContent = "−" + cont.peso.toFixed(1).replace(".", ",");
+        document.getElementById("c-gord").textContent = "−" + cont.gord.toFixed(1).replace(".", ",");
+        document.getElementById("c-pgc").textContent = "−" + cont.pgc.toFixed(1).replace(".", ",");
+        document.getElementById("c-musc").textContent = cont.musc.toFixed(1).replace(".", ",");
+      } }, 14.8)
+    .to({}, { duration: .01 }, DURACAO - .01);
+
+  atualizar();
+  window.tl = tl;
+  window.DURACAO = DURACAO;
+  if (!render) { tl.repeat(-1); tl.play(); }
+</script>
+</body>
+</html>
