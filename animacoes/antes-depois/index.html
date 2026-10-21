@@ -40,6 +40,7 @@
   #grafico text { font-family: "Inter", sans-serif; }
   .eixo-txt { font-size: 24px; font-weight: 700; fill: var(--texto-suave); }
   .nome { font-size: 29px; font-weight: 900; }
+  .inicial { font-size: 34px; font-weight: 900; }
   #data { font-size: 52px; font-weight: 900; letter-spacing: -1px; font-variant-numeric: tabular-nums; fill: #FFFFFF; }
 
   /* cartões de resultado */
@@ -115,7 +116,7 @@
   for (const k in SERIES) SERIES[k].f = monotona(D, SERIES[k].v);
 
   // ---------- Gráfico ----------
-  const X0 = 110, X1 = 740, YB = 520, YT = 90;   // à direita fica a faixa dos nomes
+  const X0 = 200, X1 = 740, YB = 520, YT = 90;   // à direita fica a faixa dos nomes
   const xd = d => X0 + (d - D0) / (D1 - D0) * (X1 - X0);
   const yKg = v => YB - (v - 10) / (90 - 10) * (YB - YT);       // eixo esquerdo: 10–90 kg
   const yPc = v => YB - (v - 25) / (45 - 25) * (YB - YT);       // eixo direito: 25–45 %
@@ -125,14 +126,12 @@
   el("line", { x1: X0, y1: YB + 10, x2: X1, y2: YB + 10, stroke: "#3A3E45", "stroke-width": 3 }, svg);
   for (const kg of [20, 40, 60, 80]) {
     el("line", { x1: X0, y1: yKg(kg), x2: X1, y2: yKg(kg), stroke: "rgba(255,255,255,.06)", "stroke-width": 2 }, svg);
-    el("text", { x: X0 - 14, y: yKg(kg) + 8, "text-anchor": "end", class: "eixo-txt" }, svg).textContent = kg;
   }
-  el("text", { x: X0 - 14, y: YT - 22, "text-anchor": "end", class: "eixo-txt" }, svg).textContent = "kg";
   [["2025-06-13", "JUN/25"], ["2026-04-29", "ABR/26"], ["2026-10-14", "OUT/26"]].forEach(([s, txt]) => {
     el("line", { x1: xd(dia(s)), y1: YB + 4, x2: xd(dia(s)), y2: YB + 18, stroke: "#3A3E45", "stroke-width": 3 }, svg);
     el("text", { x: xd(dia(s)), y: YB + 54, "text-anchor": "middle", class: "eixo-txt" }, svg).textContent = txt;
   });
-  const dataTxt = el("text", { id: "data", x: X0, y: 44 }, svg);
+  const dataTxt = el("text", { id: "data", x: X0 - 150, y: 44 }, svg);
   const defs = el("defs", {}, svg);
   const recorte = el("rect", { x: 0, y: -100, width: 0, height: 900 }, el("clipPath", { id: "clip-g" }, defs));
   const grupo = el("g", { "clip-path": "url(#clip-g)" }, svg);
@@ -149,6 +148,16 @@
     cabecas[k] = el("circle", { r: 15, fill: s.cor, opacity: 0, style: `filter: drop-shadow(0 0 12px ${s.cor})` }, svg);
     nomes[k] = el("text", { class: "nome", fill: s.cor, opacity: 0, style: `filter: drop-shadow(0 0 10px ${s.cor})` }, svg);
   }
+  // valores iniciais em destaque, à esquerda do primeiro ponto (empilhados sem se cobrir)
+  const iniciais = Object.keys(SERIES).map(k => ({ k, y: yS(k, SERIES[k].v[0]) + 11 })).sort((a, b) => a.y - b.y);
+  iniciais.forEach((it, i) => { if (i && it.y - iniciais[i - 1].y < 40) it.y = iniciais[i - 1].y + 40; });
+  const grupoIni = el("g", { id: "iniciais", opacity: 0 }, svg);
+  for (const it of iniciais) {
+    const sr = SERIES[it.k];
+    el("text", { x: X0 - 22, y: it.y, "text-anchor": "end", class: "inicial", fill: sr.cor, style: `filter: drop-shadow(0 0 10px ${sr.cor})` }, grupoIni)
+      .textContent = sr.v[0].toFixed(1).replace(".", ",") + (sr.un === "%" ? "%" : " kg");
+  }
+
   // momento em que a gordura fica abaixo da massa muscular
   let cruzamento = null;
   for (let x = D0; x <= D1; x += .5) if (SERIES.gordura.f(x) < SERIES.musculo.f(x)) { cruzamento = x; break; }
@@ -177,8 +186,10 @@
       cabecas[it.k].setAttribute("cx", xd(x)); cabecas[it.k].setAttribute("cy", it.y);
       cabecas[it.k].setAttribute("opacity", estado.p > 0 ? 1 : 0);
       const n = nomes[it.k];
-      n.textContent = `${s.nome} ${fmt(v, s.un)}`;
+      const fim = Math.min(1, Math.max(0, (estado.p - .985) / .015));   // 0 → 1 nos últimos instantes
+      n.textContent = fim > .5 ? fmt(v, s.un) : `${s.nome} ${fmt(v, s.un)}`;
       n.setAttribute("x", (xd(x) + 26).toFixed(1));
+      n.style.fontSize = (29 + 11 * fim) + "px";
       n.setAttribute("y", it.ly.toFixed(1));
       n.setAttribute("opacity", estado.p > 0 ? 1 : 0);
       // marcador da medida acende quando a linha passa
@@ -206,6 +217,7 @@
     .fromTo("#misterio", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .5, ease: "back.out(2)" }, 1.1)
     .to("#misterio", { scale: 1.08, duration: .5, ease: "sine.inOut", yoyo: true, repeat: 9 }, 1.6)
     // linha do tempo das medidas
+    .fromTo("#iniciais", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: .45, ease: "back.out(2)" }, 2.2)
     .to(estado, { p: 1, duration: 10.5, ease: "power1.inOut" }, 2.4);
   if (cruzamento) {
     const tc = 2.4 + 10.5 * (cruzamento - D0) / (D1 - D0);
