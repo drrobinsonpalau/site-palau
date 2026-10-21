@@ -34,6 +34,15 @@
   #misterio { position: absolute; inset: 0; display: grid; place-items: center; background: repeating-linear-gradient(135deg, #111317 0 22px, #15181D 22px 44px); font-size: 220px; font-weight: 900; color: rgba(212,255,58,.85); text-shadow: 0 0 30px rgba(212,255,58,.7); opacity: 0; }
   .selo { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); white-space: nowrap; padding: 10px 22px; border-radius: 30px; background: rgba(10,11,13,.85); font-size: 30px; font-weight: 900; letter-spacing: 3px; }
   #f-antes .selo { color: #FF8FA3; }
+  /* letreiros de peso no canto superior direito das fotos */
+  .letreiro { position: absolute; top: 18px; right: 18px; padding: 8px 18px 10px; border-radius: 18px; background: rgba(10,11,13,.86); border: 3px solid var(--peso);
+              box-shadow: 0 0 22px rgba(47,211,255,.6); text-align: right; }
+  .letreiro small { display: block; font-size: 20px; font-weight: 900; letter-spacing: 3px; color: var(--peso); }
+  .letreiro b { display: block; font-size: 52px; font-weight: 900; letter-spacing: -2px; font-variant-numeric: tabular-nums; color: #E6FAFF; text-shadow: 0 0 14px rgba(47,211,255,.9); line-height: 1.02; }
+  .letreiro b i { font-style: normal; font-size: 28px; letter-spacing: 0; margin-left: 4px; }
+  #letreiro-depois { border-color: var(--musculo); box-shadow: 0 0 22px rgba(212,255,58,.6); opacity: 0; }
+  #letreiro-depois small { color: var(--musculo); }
+  #letreiro-depois b { color: #F6FFD0; text-shadow: 0 0 14px rgba(212,255,58,.9); }
   #f-depois .selo { color: var(--musculo); }
 
   #grafico { position: absolute; top: 905px; left: 0; width: 1080px; height: 640px; overflow: visible; }
@@ -57,8 +66,8 @@
   <p id="chamada" class="neon">ANTES E DEPOIS</p>
   <h1 id="titulo"><span class="w">16</span> <span class="w">meses</span> <span class="w">de</span> <span class="w">acompanhamento</span></h1>
 
-  <div class="foto" id="f-antes"><img src="fotos/antes.jpg" alt=""><p class="selo">ANTES · JUN/25</p></div>
-  <div class="foto" id="f-depois"><div id="misterio">?</div><img src="fotos/depois.jpg" alt="" style="object-position: 50% 30%"><p class="selo" id="selo-depois" style="opacity:0">DEPOIS · OUT/26</p></div>
+  <div class="foto" id="f-antes"><img src="fotos/antes.jpg" alt=""><p class="selo">ANTES · JUN/25</p><div class="letreiro"><small>PESO ▼</small><b><span id="peso-vivo">81,8</span><i>kg</i></b></div></div>
+  <div class="foto" id="f-depois"><div id="misterio">?</div><img src="fotos/depois.jpg" alt="" style="object-position: 62% 30%"><p class="selo" id="selo-depois" style="opacity:0">DEPOIS · OUT/26</p><div class="letreiro" id="letreiro-depois"><small>PESO FINAL</small><b>55,0<i>kg</i></b></div></div>
 
   <svg id="grafico" viewBox="0 0 1080 640"></svg>
 
@@ -173,6 +182,7 @@
     recorte.setAttribute("width", xd(x) + 6);
     const dt = new Date(x * 864e5);
     dataTxt.textContent = MESES[dt.getUTCMonth()] + "/" + String(dt.getUTCFullYear()).slice(2);
+    document.getElementById("peso-vivo").textContent = SERIES.peso.f(x).toFixed(1).replace(".", ",");
     dataTxt.setAttribute("opacity", estado.p > 0 ? 1 : 0);
     // posição dos nomes: acima de cada ponta, afastados entre si para não se cobrirem
     const itens = Object.keys(SERIES).map(k => ({ k, y: yS(k, SERIES[k].f(x)) }));
@@ -229,7 +239,8 @@
     .fromTo("#f-depois img", { clipPath: "inset(0 0 0 100%)" }, { clipPath: "inset(0 0 0 0%)", duration: .6, ease: "power4.inOut" }, 13.2)
     .to("#f-depois", { scale: 1.06, duration: .15, ease: "power2.out" }, 13.8)
     .to("#f-depois", { scale: 1, duration: .3, ease: "power2.inOut" }, 13.95)
-    .fromTo("#selo-depois", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .3 }, 13.9);
+    .fromTo("#selo-depois", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .3 }, 13.9)
+    .fromTo("#letreiro-depois", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2.5)", transformOrigin: "100% 0%" }, 14.0);
   // cartões com contagem
   const cont = { peso: 0, gord: 0, pgc: 0, musc: 22.2 };
   tl.fromTo(".cartao", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4, stagger: .12, ease: "back.out(1.6)" }, 14.6)
