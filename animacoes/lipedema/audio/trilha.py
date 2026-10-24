@@ -1,8 +1,8 @@
-"""Trilha sonora sintetizada da animação "3 sinais de lipedema" (18 s).
+"""Efeitos sonoros da animação "3 sinais de lipedema" (sem música).
 
 Teclas de máquina de escrever sincronizadas a cada letra (teclas.json, exportado
-da camada de texto), sino de fim de linha, batidas de dor, impacto nas trocas,
-tensão grave e silêncio antes do "É LIPEDEMA.".
+da camada de texto), sino de fim de linha, batidas de dor, impacto nas trocas
+e impacto no "É LIPEDEMA.".
 Uso: python3 trilha.py teclas.json saida.wav
 """
 import json
@@ -62,13 +62,8 @@ for k in dados["teclas"]:
 for f in dados["fins"]:
     colocar(mix, sino(), f + .08, .07)
 
-# tensão grave (lá menor desafinado), crescendo até o fechamento
-tensao = sum(np.sin(2 * np.pi * f * t) for f in (55.0, 55.6, 82.4, 110.0)) * .05
-tensao += np.sin(2 * np.pi * 220 * t) * .015 * (.5 + .5 * np.sin(2 * np.pi * .25 * t))
-mix += tensao * (.5 + .5 * np.clip(t / 12.9, 0, 1)) * janela(0, 12.95, ataque=.8, soltura=.1)
-
 # batidas de dor (pulso vermelho do item 1)
-for b in (1.6, 2.4, 3.1):
+for b in dados["pulsos"]:
     colocar(mix, grave(52, .5, 9) + grave(44, .5, 11), b, .7)
 
 # impacto + respiro de ruído nas trocas de item
@@ -77,11 +72,9 @@ for f in dados["flashes"]:
     env = janela(f - .35, f + .05, ataque=.3, soltura=.05)
     mix += np.convolve(rng.standard_normal(N), np.ones(30) / 30, mode="same") * env * .5
 
-# fechamento: impacto forte no "É LIPEDEMA." e acorde grave que se resolve
+# fechamento: impacto forte no "É LIPEDEMA." 
 colocar(mix, grave(38, 2.2, 1.8), dados["impacto"], 1.0)
 colocar(mix, grave(76, 1.0, 4), dados["impacto"], .4)
-fecho = sum(np.sin(2 * np.pi * f * t) for f in (110.0, 164.8, 220.0, 261.6)) * .035
-mix += fecho * janela(dados["impacto"], DUR, ataque=.4, soltura=1.2)
 
 mix *= .89 / np.max(np.abs(mix))
 with wave.open(sys.argv[2], "wb") as w:
