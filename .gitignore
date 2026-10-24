@@ -3,3 +3,6 @@ animacoes/coracao-hormonios/coracao-hormonios-infarto-3d.mp4
 # Antes e depois: fotos de paciente e vídeo final não versionados (privacidade)
 animacoes/antes-depois/fotos/
 animacoes/antes-depois/*.mp4
+# Lipedema: vídeo da paciente e vídeo final não versionados (privacidade)
+animacoes/lipedema/video/
+animacoes/lipedema/*.mp4

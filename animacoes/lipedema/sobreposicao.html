@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lipedema: Três Sinais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  /* Camada transparente desenhada por cima do vídeo da paciente (1080x1920) */
+  :root { --vermelho: #FF1A2E; --vermelho-rgb: 255, 26, 46; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: transparent; overflow: hidden; }
+  #palco { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Special Elite", "Courier New", monospace; }
+  .vinheta { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 40%, rgba(0,0,0,.65) 100%); }
+  .sombra-topo { position: absolute; left: 0; right: 0; top: 0; height: 420px; background: linear-gradient(rgba(0,0,0,.85), transparent); }
+  .sombra-base { position: absolute; left: 0; right: 0; bottom: 0; height: 980px; background: linear-gradient(transparent, rgba(0,0,0,.72) 40%, rgba(0,0,0,.9)); }
+  #escuro { position: absolute; inset: 0; background: #050505; opacity: 0; }
+  #flash { position: absolute; inset: 0; background: var(--vermelho); mix-blend-mode: screen; opacity: 0; }
+  #pulso { position: absolute; inset: 0; box-shadow: inset 0 0 220px 60px rgba(var(--vermelho-rgb), .75); opacity: 0; }
+
+  .verm { color: var(--vermelho); text-shadow: 0 0 2px rgba(var(--vermelho-rgb), .9), 0 0 24px rgba(var(--vermelho-rgb), .55); }
+  .cursor::after { content: "█"; color: var(--vermelho); margin-left: 4px; opacity: var(--cur, 0); }
+
+  #cabeca { position: absolute; top: 150px; left: 70px; right: 70px; font-size: 58px; color: #F2F2F2; letter-spacing: 2px; white-space: pre; }
+  #cabeca .verm { font-size: 58px; }
+  #linha-cabeca { position: absolute; top: 236px; left: 70px; width: 940px; height: 4px; background: var(--vermelho); transform-origin: left; transform: scaleX(0); box-shadow: 0 0 14px var(--vermelho); }
+
+  .item { position: absolute; left: 70px; right: 70px; top: 1180px; }
+  .item .num { font-size: 190px; line-height: 1; white-space: pre; }
+  .item .titulo { margin-top: 10px; font-size: 96px; line-height: 1.05; white-space: pre; }
+  .item .risco { margin-top: 22px; width: 100%; height: 6px; background: var(--vermelho); transform-origin: left; transform: scaleX(0); box-shadow: 0 0 16px var(--vermelho); }
+  .item .sub { margin-top: 26px; font-size: 46px; line-height: 1.25; color: #F2F2F2; white-space: pre; }
+
+  #final { position: absolute; left: 70px; right: 70px; top: 700px; text-align: left; }
+  #final1 { font-size: 66px; line-height: 1.2; color: #F2F2F2; white-space: pre; }
+  #final2 { margin-top: 60px; font-size: 150px; line-height: 1; white-space: pre; transform-origin: 0% 50%; }
+  #final3 { margin-top: 90px; font-size: 46px; line-height: 1.3; color: #F2F2F2; white-space: pre; }
+  #nota { position: absolute; left: 0; right: 0; bottom: 60px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; color: rgba(255,255,255,.45); }
+</style>
+</head>
+<body>
+<div id="palco">
+  <div class="vinheta"></div>
+  <div class="sombra-topo"></div>
+  <div class="sombra-base"></div>
+  <div id="pulso"></div>
+  <div id="escuro"></div>
+
+  <p id="cabeca"><span data-texto="3 SINAIS DE "></span><span class="verm" data-texto="LIPEDEMA"></span></p>
+  <div id="linha-cabeca"></div>
+
+  <div class="item" id="i1"><p class="num verm" data-texto="1."></p><p class="titulo verm" data-texto="DOR"></p><div class="risco"></div><p class="sub" data-texto="ao toque, nas pernas&#10;e nos braços"></p></div>
+  <div class="item" id="i2"><p class="num verm" data-texto="2."></p><p class="titulo verm" data-texto="RESISTE&#10;À DIETA"></p><div class="risco"></div><p class="sub" data-texto="a gordura das pernas&#10;não vai embora"></p></div>
+  <div class="item" id="i3"><p class="num verm" data-texto="3."></p><p class="titulo verm" data-texto="NÃO RESPONDE&#10;À DIETA"></p><div class="risco"></div><p class="sub" data-texto="o corpo emagrece em cima,&#10;as pernas não"></p></div>
+
+  <div id="final">
+    <p id="final1" data-texto="Isso não é falta&#10;de disciplina."></p>
+    <p id="final2" class="verm" data-texto="É LIPEDEMA."></p>
+    <p id="final3" data-texto="Envie para uma mulher&#10;que precisa saber disso."></p>
+  </div>
+  <div id="flash"></div>
+  <p id="nota">Imagens divulgadas com autorização da paciente.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const DURACAO = 18;
+
+  // ---------- Máquina de escrever: cada trecho tem início e velocidade; as teclas viram som ----------
+  const DIGITAR = [];   // { el, texto, inicio, cps }
+  function digitar(sel, inicio, cps = 16) {
+    const el = document.querySelector(sel);
+    const texto = el.getAttribute("data-texto");
+    DIGITAR.push({ el, texto, inicio, cps });
+    return inicio + texto.length / cps;   // devolve quando termina
+  }
+  // ritmo humano: pequenas variações determinísticas no intervalo entre teclas
+  function instanteDaLetra(d, i) {
+    let t = d.inicio;
+    for (let k = 0; k < i; k++) t += (1 / d.cps) * (.75 + .5 * ((Math.sin(k * 12.9898 + d.inicio * 78.233) * 43758.5453) % 1 + 1) % 1);
+    return t;
+  }
+  function atualizarTexto(t) {
+    let ultimo = null;
+    for (const d of DIGITAR) {
+      let n = 0;
+      while (n < d.texto.length && instanteDaLetra(d, n) <= t) n++;
+      d.el.textContent = d.texto.slice(0, n);
+      d.el.classList.remove("cursor");
+      if (n > 0 && n <= d.texto.length && t < instanteDaLetra(d, d.texto.length - 1) + .9) ultimo = d.el;
+    }
+    // cursor piscando no trecho que está sendo escrito
+    if (ultimo) { ultimo.classList.add("cursor"); ultimo.style.setProperty("--cur", Math.floor(t * 3) % 2 ? 0 : 1); }
+  }
+
+  const tl = gsap.timeline({ paused: true, onUpdate: () => atualizarTexto(tl.time()) });
+  const flash = (t, forca = .55) => tl.fromTo("#flash", { opacity: forca }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, t);
+  const saida = (sel, t) => tl.to(sel, { keyframes: [{ x: -14, opacity: .6, duration: .05 }, { x: 10, opacity: .3, duration: .05 }, { x: 0, opacity: 0, duration: .08 }] }, t);
+
+  // cabeçalho
+  let fim = digitar("#cabeca span:nth-child(1)", .2, 18);
+  fim = digitar("#cabeca span:nth-child(2)", fim + .05, 14);
+  tl.to("#linha-cabeca", { scaleX: 1, duration: .5, ease: "power3.out" }, fim + .05);
+
+  // item 1 — dor (a pele pulsa em vermelho)
+  fim = digitar("#i1 .num", .95, 10);
+  fim = digitar("#i1 .titulo", fim + .1, 9);
+  tl.to("#i1 .risco", { scaleX: 1, duration: .35, ease: "power4.out" }, fim + .05);
+  fim = digitar("#i1 .sub", fim + .3, 26);
+  [1.6, 2.4, 3.1].forEach(t => tl.fromTo("#pulso", { opacity: .9 }, { opacity: 0, duration: .55, ease: "power2.out", immediateRender: false }, t));
+  saida("#i1", 3.4);
+  flash(3.55);
+
+  // item 2 — resiste à dieta
+  fim = digitar("#i2 .num", 3.65, 10);
+  fim = digitar("#i2 .titulo", fim + .1, 12);
+  tl.to("#i2 .risco", { scaleX: 1, duration: .35, ease: "power4.out" }, fim + .05);
+  fim = digitar("#i2 .sub", fim + .3, 24);
+  saida("#i2", 7.95);
+  flash(8.1);
+
+  // item 3 — não responde à dieta
+  fim = digitar("#i3 .num", 8.2, 10);
+  fim = digitar("#i3 .titulo", fim + .1, 13);
+  tl.to("#i3 .risco", { scaleX: 1, duration: .35, ease: "power4.out" }, fim + .05);
+  fim = digitar("#i3 .sub", fim + .3, 24);
+  saida("#i3", 12.9);
+
+  // final: tela escurece, frase e impacto
+  tl.to("#escuro", { opacity: .78, duration: .6, ease: "power2.inOut" }, 12.95)
+    .to("#cabeca, #linha-cabeca", { opacity: 0, duration: .3 }, 12.95);
+  fim = digitar("#final1", 13.4, 20);
+  fim = digitar("#final2", fim + .35, 8);
+  tl.fromTo("#final2", { scale: 1 }, { keyframes: [{ scale: 1.12, duration: .12, ease: "power2.out" }, { scale: 1, duration: .3, ease: "power2.inOut" }] }, fim + .02);
+  flash(fim + .02, .7);
+  digitar("#final3", fim + .55, 22);
+  tl.to({}, { duration: .01 }, DURACAO - .01);
+
+  // instantes de cada tecla e de cada fim de linha (para o som)
+  window.TECLAS = DIGITAR.flatMap(d => [...d.texto].map((c, i) => ({ t: +instanteDaLetra(d, i).toFixed(4), c })));
+  window.FINS = DIGITAR.map(d => +instanteDaLetra(d, d.texto.length - 1).toFixed(4));
+  window.IMPACTO = fim + .02;
+  window.FLASHES = [3.55, 8.1];
+  window.tl = tl; window.DURACAO = DURACAO;
+  atualizarTexto(0);
+  if (!new URLSearchParams(location.search).has("render")) { tl.repeat(-1); tl.play(); }
+</script>
+</body>
+</html>
