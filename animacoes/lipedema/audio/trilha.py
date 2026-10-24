@@ -78,7 +78,8 @@ for f in dados["flashes"]:
     mix += np.convolve(rng.standard_normal(N), np.ones(30) / 30, mode="same") * env * .5
 
 # fechamento: impacto forte no "É LIPEDEMA." e acorde grave que se resolve
-colocar(mix, grave(38, 2.2, 1.8) + grave(76, 1.0, 4) * .4, dados["impacto"], 1.0)
+colocar(mix, grave(38, 2.2, 1.8), dados["impacto"], 1.0)
+colocar(mix, grave(76, 1.0, 4), dados["impacto"], .4)
 fecho = sum(np.sin(2 * np.pi * f * t) for f in (110.0, 164.8, 220.0, 261.6)) * .035
 mix += fecho * janela(dados["impacto"], DUR, ataque=.4, soltura=1.2)
 
