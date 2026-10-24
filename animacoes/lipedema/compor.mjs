@@ -6,11 +6,11 @@ import { spawn } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 
 const [,, video, overlay, out, teclasJson] = process.argv;
-const fps = 30, dur = 35, n = Math.round(dur * fps);
+const fps = 30, dur = 37, n = Math.round(dur * fps);
 
 const filtro = [
   // o vídeo de entrada já vem em câmera lenta interpolada (37,5%); última imagem congelada para o fechamento
-  `[0:v]fps=${fps},tpad=stop_mode=clone:stop_duration=10,trim=0:${dur},setpts=PTS-STARTPTS,`,
+  `[0:v]fps=${fps},tpad=stop_mode=clone:stop_duration=12,trim=0:${dur},setpts=PTS-STARTPTS,`,
   // aproximação lenta, preto e branco com contraste e granulação de filme
   `scale=w='2*trunc(540*(1+0.07*t/${dur}))':h=-2:eval=frame:flags=lanczos,crop=1080:1920:'(iw-1080)/2':'(ih-1920)/2',`,
   `hue=s=0,eq=contrast=1.12:brightness=-0.02,noise=alls=9:allf=t+u,format=yuv420p[base];`,
