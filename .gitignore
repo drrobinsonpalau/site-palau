@@ -6,3 +6,5 @@ animacoes/antes-depois/*.mp4
 # Lipedema: vídeo da paciente e vídeo final não versionados (privacidade)
 animacoes/lipedema/video/
 animacoes/lipedema/*.mp4
+# Cópias convertidas para o Instagram (geradas por animacoes/para-instagram.sh)
+*-instagram.mp4
