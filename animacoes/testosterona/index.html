@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Testosterona ao Longo da Vida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --testo: #2FD3FF; --testo-rgb: 47, 211, 255;
+    --idade: #9FF0FF;            /* azul neon claro da idade */
+    --fundo: #0A0B0D; --texto: #FFFFFF; --texto-suave: #A9ADB3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; overflow: hidden; }
+  body { display: grid; place-items: center; font-family: "Inter", system-ui, sans-serif; }
+  #palco { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--fundo); color: var(--texto); transform-origin: center center; }
+  #particulas { position: absolute; inset: 0; width: 1080px; height: 1920px; pointer-events: none; }
+  #vinheta { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,.78) 100%); }
+  #progresso { position: absolute; top: 0; left: 0; height: 10px; width: 100%; background: rgba(255,255,255,.1); z-index: 5; }
+  #progresso i { display: block; height: 100%; width: 100%; background: var(--testo); box-shadow: 0 0 18px var(--testo); transform-origin: left; transform: scaleX(0); }
+  .neon-azul { color: #E6FAFF; text-shadow: 0 0 6px rgba(var(--testo-rgb), .9), 0 0 18px rgba(var(--testo-rgb), .8), 0 0 42px rgba(var(--testo-rgb), .55); }
+
+  #chamada { position: absolute; top: 110px; left: 0; right: 0; text-align: center; font-size: 34px; font-weight: 900; letter-spacing: 6px; opacity: 0; }
+  #titulo { position: absolute; top: 165px; left: 0; right: 0; text-align: center; font-size: 78px; font-weight: 900; letter-spacing: -2px; line-height: 1.02; }
+  #titulo .w { display: inline-block; opacity: 0; }
+
+  #fases { position: absolute; top: 370px; left: 70px; right: 70px; height: 200px; }
+  .fase { position: absolute; inset: 0; text-align: center; opacity: 0; }
+  .fase small { display: inline-block; padding: 6px 18px; border-radius: 20px; border: 3px solid var(--testo); font-size: 26px; font-weight: 900; letter-spacing: 4px; color: var(--testo); box-shadow: 0 0 16px rgba(var(--testo-rgb), .5); }
+  .fase p { margin-top: 20px; font-size: 44px; font-weight: 700; line-height: 1.25; }
+  .fase p b { color: #E6FAFF; text-shadow: 0 0 16px rgba(var(--testo-rgb), .9); }
+
+  #grafico { position: absolute; top: 600px; left: 0; width: 1080px; height: 820px; overflow: visible; }
+  #grafico text { font-family: "Inter", sans-serif; }
+  .eixo-txt { font-size: 26px; font-weight: 700; fill: var(--texto-suave); }
+  .nome { font-size: 34px; font-weight: 900; }
+  #idade-n { font-size: 300px; font-weight: 900; letter-spacing: -10px; fill: #E9FCFF; font-variant-numeric: tabular-nums; }
+  #idade-anos { font-size: 34px; font-weight: 900; letter-spacing: 14px; fill: var(--idade); }
+
+  #cartao { position: absolute; top: 1480px; left: 90px; right: 90px; padding: 26px 30px; border-radius: 28px; border: 3px solid rgba(var(--testo-rgb), .7); background: rgba(47,211,255,.06); box-shadow: 0 0 30px rgba(var(--testo-rgb), .25); display: flex; align-items: center; justify-content: space-between; opacity: 0; }
+  #cartao small { font-size: 28px; font-weight: 900; letter-spacing: 3px; color: var(--testo); line-height: 1.3; }
+  #cartao b { font-size: 120px; font-weight: 900; letter-spacing: -4px; font-variant-numeric: tabular-nums; line-height: 1; }
+  #cartao b i { font-style: normal; font-size: 60px; }
+  #nota { position: absolute; left: 50px; right: 50px; bottom: 70px; text-align: center; font-size: 24px; font-weight: 500; color: #6B7078; }
+
+  /* fechamento */
+  #final { position: absolute; inset: 0; background: rgba(10,11,13,.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; padding: 0 80px; }
+  #final .k { font-size: 34px; font-weight: 900; letter-spacing: 6px; }
+  #final h2 { margin-top: 20px; font-size: 96px; font-weight: 900; letter-spacing: -3px; line-height: 1.02; }
+  #barra { margin-top: 70px; width: 880px; display: flex; align-items: center; gap: 26px; }
+  #barra .trilho { flex: 1; height: 34px; border-radius: 17px; background: rgba(255,255,255,.08); overflow: hidden; }
+  #barra .trilho i { display: block; height: 100%; width: 100%; border-radius: 17px; background: linear-gradient(90deg, #1A8FFF, var(--testo)); box-shadow: 0 0 24px var(--testo); transform-origin: left; transform: scaleX(0); }
+  #barra b { width: 190px; text-align: right; font-size: 92px; font-weight: 900; letter-spacing: -3px; font-variant-numeric: tabular-nums; }
+  #barra-nome { margin-top: 18px; width: 880px; text-align: left; font-size: 30px; font-weight: 900; letter-spacing: 4px; color: var(--testo); }
+  #final3 { margin-top: 90px; font-size: 50px; font-weight: 700; line-height: 1.25; opacity: 0; }
+  #final4 { margin-top: 60px; font-size: 54px; font-weight: 900; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="palco">
+  <canvas id="particulas" width="1080" height="1920"></canvas>
+  <p id="chamada" class="neon-azul">HOMENS · DO 1 AOS 90 ANOS</p>
+  <h1 id="titulo"><span class="w">COMO</span> <span class="w">A</span> <span class="w neon-azul">TESTOSTERONA</span><br><span class="w">ENVELHECE</span></h1>
+
+  <div id="fases">
+    <div class="fase"><small>INFÂNCIA</small><p>Na infância, a testosterona<br><b>quase não aparece.</b></p></div>
+    <div class="fase"><small>PUBERDADE</small><p>Dos 11 aos 19 anos,<br>ela <b>sobe mais de 20 vezes.</b></p></div>
+    <div class="fase"><small>O AUGE</small><p>O pico chega <b>perto dos 19</b><br>e se sustenta até os 30.</p></div>
+    <div class="fase"><small>MEIA-IDADE</small><p>Depois dos 30, cai <b>cerca de 1% ao ano.</b><br>Obesidade e sedentarismo aceleram.</p></div>
+    <div class="fase"><small>DEPOIS DOS 60</small><p>A queda continua.<br>Aos 90, resta <b>pouco mais de um terço.</b></p></div>
+  </div>
+
+  <svg id="grafico" viewBox="0 0 1080 820"></svg>
+
+  <div id="cartao"><small>TESTOSTERONA<br>EM % DO AUGE</small><b><span id="cartao-n">2</span><i>%</i></b></div>
+  <p id="nota">Curva esquemática, em % do pico. Valores individuais variam.</p>
+
+  <div id="final">
+    <p class="k neon-azul">AOS 90 ANOS</p>
+    <h2>QUANTO RESTA<br>DO AUGE</h2>
+    <div id="barra"><div class="trilho"><i></i></div><b class="neon-azul"><span id="barra-n">0</span>%</b></div>
+    <p id="barra-nome">TESTOSTERONA</p>
+    <p id="final3">Testosterona baixa tem<br><b class="neon-azul">diagnóstico e tratamento.</b></p>
+    <p id="final4">Mande para um homem com 40+.</p>
+  </div>
+  <div id="vinheta"></div>
+  <div id="progresso"><i></i></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const palco = document.getElementById("palco");
+  function ajustar() { palco.style.transform = `scale(${Math.min(innerWidth / 1080, innerHeight / 1920)})`; }
+  addEventListener("resize", ajustar); ajustar();
+  const render = new URLSearchParams(location.search).has("render");
+  const NS = "http://www.w3.org/2000/svg";
+
+  // ---------- Curva esquemática da testosterona (% do pico) ----------
+  const IDADES = [1, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90];
+  const NIVEIS = [2, 2, 3, 5, 10, 22, 40, 60, 77, 88, 96, 100, 99, 96, 91, 86, 81, 76, 71, 66, 61, 56, 51, 46, 41, 37];
+  function monotona(xs, ys) {   // interpolação sem picos inventados entre os pontos
+    const n = xs.length, d = [], m = new Array(n);
+    for (let i = 0; i < n - 1; i++) d.push((ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]));
+    m[0] = d[0]; m[n - 1] = d[n - 2];
+    for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+    for (let i = 0; i < n - 1; i++) {
+      if (d[i] === 0) { m[i] = m[i + 1] = 0; continue; }
+      const a = m[i] / d[i], b = m[i + 1] / d[i], s = a * a + b * b;
+      if (s > 9) { const k = 3 / Math.sqrt(s); m[i] = k * a * d[i]; m[i + 1] = k * b * d[i]; }
+    }
+    return x => {
+      let i = 0; while (i < n - 2 && x > xs[i + 1]) i++;
+      const h = xs[i + 1] - xs[i], u = Math.min(1, Math.max(0, (x - xs[i]) / h));
+      return (2 * u ** 3 - 3 * u ** 2 + 1) * ys[i] + (u ** 3 - 2 * u ** 2 + u) * h * m[i] + (-2 * u ** 3 + 3 * u ** 2) * ys[i + 1] + (u ** 3 - u ** 2) * h * m[i + 1];
+    };
+  }
+  const T = monotona(IDADES, NIVEIS);
+
+  // ---------- Gráfico ----------
+  const X0 = 130, X1 = 980, YB = 690, YT = 110;
+  const xa = a => X0 + (a - 1) / 89 * (X1 - X0);
+  const yv = v => YB - v / 100 * (YB - YT);
+  const svg = document.getElementById("grafico");
+  function el(tag, a, pai) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); if (pai) pai.appendChild(e); return e; }
+  // idade grande no centro, em azul neon claro (atrás da curva)
+  const idadeN = el("text", { id: "idade-n", x: (X0 + X1) / 2, y: (YT + YB) / 2 + 100, "text-anchor": "middle", opacity: .9,
+    style: "filter: drop-shadow(0 0 10px #9FF0FF) drop-shadow(0 0 34px rgba(47,211,255,.75)) drop-shadow(0 0 80px rgba(47,211,255,.4))" }, svg);
+  el("text", { id: "idade-anos", x: (X0 + X1) / 2, y: (YT + YB) / 2 + 160, "text-anchor": "middle", style: "filter: drop-shadow(0 0 10px #2FD3FF)" }, svg).textContent = "ANOS";
+  for (const p of [25, 50, 75, 100]) {
+    el("line", { x1: X0, y1: yv(p), x2: X1, y2: yv(p), stroke: "rgba(255,255,255,.07)", "stroke-width": 2 }, svg);
+    el("text", { x: X0 - 16, y: yv(p) + 9, "text-anchor": "end", class: "eixo-txt" }, svg).textContent = p + "%";
+  }
+  el("text", { x: 24, y: YT - 40, class: "eixo-txt" }, svg).textContent = "% DO AUGE";
+  el("line", { x1: X0, y1: YB + 10, x2: X1, y2: YB + 10, stroke: "#3A3E45", "stroke-width": 3 }, svg);
+  for (const a of [1, 20, 40, 60, 80, 90]) {
+    el("line", { x1: xa(a), y1: YB + 4, x2: xa(a), y2: YB + 18, stroke: "#3A3E45", "stroke-width": 3 }, svg);
+    el("text", { x: xa(a), y: YB + 56, "text-anchor": "middle", class: "eixo-txt" }, svg).textContent = a;
+  }
+  el("text", { x: (X0 + X1) / 2, y: YB + 100, "text-anchor": "middle", class: "eixo-txt", "letter-spacing": 6 }, svg).textContent = "IDADE (ANOS)";
+  const defs = el("defs", {}, svg);
+  const recorte = el("rect", { x: 0, y: -100, width: 0, height: 1100 }, el("clipPath", { id: "clip-g" }, defs));
+  const grupo = el("g", { "clip-path": "url(#clip-g)" }, svg);
+  let d = "";
+  for (let a = 1; a <= 90.001; a += .2) d += (d ? " L" : "M") + xa(a).toFixed(1) + " " + yv(T(a)).toFixed(1);
+  el("path", { d, fill: "none", stroke: "#2FD3FF", "stroke-width": 36, opacity: .2, "stroke-linecap": "round" }, grupo);
+  el("path", { d, fill: "none", stroke: "#2FD3FF", "stroke-width": 13, "stroke-linecap": "round", "stroke-linejoin": "round", style: "filter: drop-shadow(0 0 14px #2FD3FF)" }, grupo);
+  // selo do auge
+  const auge = el("g", { opacity: 0 }, svg);
+  el("circle", { cx: xa(19), cy: yv(100), r: 14, fill: "#0A0B0D", stroke: "#E6FAFF", "stroke-width": 5 }, auge);
+  el("rect", { x: xa(19) - 4, y: yv(100) - 92, width: 330, height: 58, rx: 29, fill: "rgba(10,11,13,.92)", stroke: "#2FD3FF", "stroke-width": 3 }, auge);
+  el("text", { x: xa(19) + 161, y: yv(100) - 52, "text-anchor": "middle", class: "nome", fill: "#E6FAFF", "font-size": 30 }, auge).textContent = "AUGE · 19 ANOS";
+  const cabeca = el("circle", { r: 18, fill: "#2FD3FF", opacity: 0, style: "filter: drop-shadow(0 0 14px #2FD3FF)" }, svg);
+  const nome = el("text", { class: "nome", fill: "#2FD3FF", opacity: 0, style: "paint-order: stroke; stroke: #0A0B0D; stroke-width: 12px; stroke-linejoin: round; filter: drop-shadow(0 0 10px #2FD3FF)" }, svg);
+
+  // ---------- Bolinhas: produção do hormônio (sobem da ponta, na proporção do nível) ----------
+  const cx = document.getElementById("particulas").getContext("2d");
+  let sp = 3;
+  const rnd = () => (sp = (sp * 16807) % 2147483647) / 2147483647;
+  const estado = { idade: 1, p: 0 };
+  const FASES_IDADE = [[1.6, 3.6, 10], [3.6, 7.6, 19], [8.4, 10.6, 30], [10.6, 17.4, 60], [17.4, 23.6, 90]];
+  function idadeEm(t) {
+    let idade = 1;
+    for (const [a, b, alvo] of FASES_IDADE) {
+      if (t <= a) break;
+      const x = Math.min(1, (t - a) / (b - a));
+      idade += (alvo - idade) * (-(Math.cos(Math.PI * x) - 1) / 2);
+    }
+    return idade;
+  }
+  const BOLINHAS = [];
+  for (let ts = 1.6; ts < 24; ts += .03) BOLINHAS.push({ ts, sorte: rnd(), vx: (rnd() - .5) * 140, vy: 180 + rnd() * 260, r: 3 + rnd() * 5 });
+  function desenharBolinhas(t) {
+    cx.clearRect(0, 0, 1080, 1920);
+    for (const b of BOLINHAS) {
+      const vida = t - b.ts;
+      if (vida < 0 || vida > 1.8) continue;
+      const idade = idadeEm(b.ts), nivel = T(idade) / 100;
+      if (b.sorte > nivel * .95) continue;
+      const x = xa(idade) + b.vx * vida, y = 600 + yv(T(idade)) - b.vy * vida + 40 * vida * vida;
+      const a = Math.min(1, vida / .1) * (1 - vida / 1.8);
+      cx.globalAlpha = a; cx.shadowColor = "#2FD3FF"; cx.shadowBlur = 16; cx.fillStyle = "#9FF0FF";
+      cx.beginPath(); cx.arc(x, y, b.r * (1 - vida / 3), 0, Math.PI * 2); cx.fill();
+    }
+    cx.globalAlpha = 1; cx.shadowBlur = 0;
+  }
+
+  function atualizar(t) {
+    const a = estado.idade, v = T(a);
+    recorte.setAttribute("width", xa(a) + 8);
+    idadeN.textContent = Math.round(a);
+    cabeca.setAttribute("cx", xa(a)); cabeca.setAttribute("cy", yv(v)); cabeca.setAttribute("opacity", estado.p);
+    nome.textContent = `TESTOSTERONA ${Math.round(v)}%`;
+    const w = nome.getComputedTextLength(), lado = Math.min(1, Math.max(0, (xa(a) - 520) / 260));
+    nome.setAttribute("x", (xa(a) + 28 - (w + 56) * lado).toFixed(1));
+    const liso = x => Math.min(1, Math.max(0, x)) ** 2 * (3 - 2 * Math.min(1, Math.max(0, x)));
+    const abaixo = liso((a - 15.5) / 2.5) * (1 - liso((a - 34) / 4));
+    nome.setAttribute("y", (yv(v) - 34 + 96 * abaixo).toFixed(1));
+    nome.setAttribute("opacity", estado.p);
+    document.getElementById("cartao-n").textContent = Math.round(v);
+    desenharBolinhas(t);
+  }
+
+  // ---------- Linha do tempo ----------
+  const DURACAO = 31;
+  const tl = gsap.timeline({ paused: true, onUpdate: () => atualizar(tl.time()) });
+  function piscar(alvo, inicio) {
+    [[0, 1], [.06, .15], [.1, 1], [.18, .3], [.24, 1], [.4, .6], [.45, 1]].forEach(([dt, o]) => tl.set(alvo, { opacity: o }, inicio + dt));
+  }
+  function fase(i, inicio, fim) {
+    const f = `.fase:nth-child(${i})`;
+    tl.fromTo(f, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .35, ease: "power2.out" }, inicio)
+      .to(f, { opacity: 0, y: -16, duration: .25, ease: "power2.in" }, fim);
+  }
+  tl.to("#progresso i", { scaleX: 1, duration: DURACAO, ease: "none" }, 0);
+  piscar("#chamada", .05);
+  tl.fromTo("#titulo .w", { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, stagger: .08, ease: "power2.out" }, .3)
+    .fromTo("#cartao", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.6)" }, 1.2)
+    .to(estado, { p: 1, duration: .3 }, 1.4);
+  FASES_IDADE.forEach(([a, b, alvo]) => tl.to(estado, { idade: alvo, duration: b - a, ease: "sine.inOut" }, a));
+  fase(1, 1.4, 3.5); fase(2, 3.6, 8.2); fase(3, 8.4, 10.5); fase(4, 10.6, 17.2); fase(5, 17.4, 23.9);
+  // pico: selo do auge e zoom de impacto na idade
+  tl.fromTo(auge, { opacity: 0 }, { opacity: 1, duration: .35, ease: "power2.out" }, 7.6)
+    .to("#idade-n", { scale: 1.12, transformOrigin: "50% 50%", duration: .15, ease: "power2.out" }, 7.6)
+    .to("#idade-n", { scale: 1, duration: .35, ease: "power2.inOut" }, 7.75);
+  // fechamento
+  const barra = { v: 0 };
+  tl.to("#final", { opacity: 1, duration: .6, ease: "power2.inOut" }, 24.1)
+    .to("#barra .trilho i", { scaleX: .37, duration: 1.6, ease: "power2.out" }, 25.0)
+    .to(barra, { v: 37, duration: 1.6, ease: "power2.out", onUpdate: () => { document.getElementById("barra-n").textContent = Math.round(barra.v); } }, 25.0)
+    .fromTo("#final3", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .45, ease: "power3.out" }, 26.9)
+    .fromTo("#final4", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .45, ease: "power3.out" }, 28.0)
+    .to({}, { duration: .01 }, DURACAO - .01);
+  piscar("#final .k", 24.4);
+
+  atualizar(0);
+  window.tl = tl; window.DURACAO = DURACAO;
+  // instante em que cada década é atingida (para os "tics" do som)
+  const DECADAS = [];
+  for (let dec = 10, t = 0; dec <= 90 && t < DURACAO; t += .005) if (idadeEm(t) >= dec) { DECADAS.push(+t.toFixed(3)); dec += 10; }
+  window.MARCOS = { fases: FASES_IDADE, auge: 7.6, final: 24.1, barra: 25.0, decadas: DECADAS, duracao: DURACAO };
+  if (!render) { tl.repeat(-1); tl.play(); }
+</script>
+</body>
+</html>
